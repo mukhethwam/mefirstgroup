@@ -1,39 +1,41 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 215 25% 27%;
+    --background: 220 20% 97%;
+    --foreground: 220 30% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 27%;
+    --card-foreground: 220 30% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 27%;
+    --popover-foreground: 220 30% 15%;
 
-    --primary: 210 55% 23%;
+    --primary: 220 70% 25%;
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 25 96% 46%;
+    --secondary: 25 100% 50%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 25% 40%;
+    --muted: 220 15% 94%;
+    --muted-foreground: 220 15% 45%;
 
-    --accent: 210 20% 96%;
-    --accent-foreground: 215 25% 27%;
+    --accent: 220 60% 95%;
+    --accent-foreground: 220 30% 15%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 215 25% 27%;
+    --border: 220 20% 90%;
+    --input: 220 20% 90%;
+    --ring: 220 70% 25%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -43,14 +45,18 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(220, 70%, 20%), hsl(220, 80%, 40%), hsl(200, 90%, 50%));
+    --gradient-secondary: linear-gradient(135deg, hsl(25, 100%, 50%), hsl(35, 100%, 55%), hsl(45, 100%, 60%));
+    --gradient-dark: linear-gradient(135deg, hsl(220, 50%, 10%), hsl(220, 60%, 20%), hsl(210, 70%, 30%));
+    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
   }
-  
-  /* Fix for webkit rendering issues */
+
   html {
     box-sizing: border-box;
     view-transition-name: none;
   }
-  
+
   *, *:before, *:after {
     box-sizing: inherit;
   }
@@ -66,26 +72,37 @@
     scroll-behavior: smooth;
     margin: 0;
     padding: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   html {
     scroll-behavior: smooth;
   }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+  }
 }
 
 @layer components {
   .section-padding {
-    @apply py-16 md:py-20 px-4;
+    @apply py-20 md:py-28 px-4;
   }
-  
+
   .section-title {
-    @apply text-3xl md:text-4xl font-bold mb-6 text-transport-blue;
+    @apply text-3xl md:text-5xl font-bold mb-6;
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     position: relative;
     display: inline-block;
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.75rem;
   }
-  
+
   .section-title::after {
     content: '';
     position: absolute;
@@ -93,12 +110,84 @@
     left: 50%;
     transform: translateX(-50%);
     width: 80px;
-    height: 3px;
-    background-color: theme('colors.transport.orange');
+    height: 4px;
+    border-radius: 2px;
+    background: var(--gradient-secondary);
   }
-  
+
   .section-subtitle {
-    @apply text-xl md:text-2xl font-semibold mb-3 text-transport-blue;
+    @apply text-xl md:text-2xl font-semibold mb-3;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-secondary {
+    background: var(--gradient-secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-bg {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-bg-secondary {
+    background: var(--gradient-secondary);
+  }
+
+  .gradient-bg-dark {
+    background: var(--gradient-dark);
+  }
+
+  .glass-card {
+    @apply backdrop-blur-xl border shadow-lg;
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .glass-card-dark {
+    @apply backdrop-blur-xl border shadow-lg;
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .card-hover {
+    @apply transition-all duration-500;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  }
+
+  .btn-gradient {
+    background: var(--gradient-secondary);
+    @apply text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition-all duration-300;
+  }
+
+  .btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px -10px hsl(25, 100%, 50%, 0.5);
+  }
+
+  .btn-gradient-primary {
+    background: var(--gradient-primary);
+    @apply text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition-all duration-300;
+  }
+
+  .btn-gradient-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px -10px hsl(220, 70%, 25%, 0.5);
   }
 }
 
@@ -106,24 +195,24 @@
   .animate-fade-in {
     animation: fadeIn 0.8s ease-out;
   }
-  
+
   .animate-slide-up {
-    animation: slideUp 0.5s ease-out;
+    animation: slideUp 0.6s ease-out;
   }
-  
+
   .hover-scale {
     @apply transition-transform duration-300 hover:scale-105;
   }
-  
-  .glass {
-    @apply backdrop-blur-md bg-white/70 border border-white/30 shadow-lg;
+
+  .text-balance {
+    text-wrap: balance;
   }
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -134,7 +223,7 @@
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;

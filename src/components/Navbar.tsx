@@ -7,207 +7,139 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastScrollY = useRef(0);
+  const ticking = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Clear any existing timeout
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-      
-      // Only update if scroll position has changed significantly (reduces jitter)
-      const scrollDifference = Math.abs(currentScrollY - lastScrollY.current);
-      if (scrollDifference < 2) return;
-      
-      // Use RAF for smooth updates
-      requestAnimationFrame(() => {
-        const shouldBeScrolled = currentScrollY > 10;
-        if (shouldBeScrolled !== isScrolled) {
+      if (!ticking.current) {
+        ticking.current = true;
+        requestAnimationFrame(() => {
+          const shouldBeScrolled = window.scrollY > 10;
           setIsScrolled(shouldBeScrolled);
-        }
-        lastScrollY.current = currentScrollY;
-      });
-    };
-
-    // Initial check
-    handleScroll();
-    
-    // Add scroll listener with passive option for better performance
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
+          lastScrollY.current = window.scrollY;
+          ticking.current = false;
+        });
       }
     };
-  }, [isScrolled]);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const scrollToSection = (sectionId: string) => {
     setIsMenuOpen(false);
-    
-    if (location.pathname !== '/') {
-      navigate('/');
+    if (location.pathname !== "/") {
+      navigate("/");
       setTimeout(() => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
       }, 100);
     } else {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
     }
   };
 
-  return (
-    <nav className={`bg-white sticky top-0 z-50 transition-shadow duration-300 ease-out ${isScrolled ? 'shadow-lg' : ''}`}>
-      <div className="container mx-auto px-4">
-        <div className={`flex justify-between items-center transition-all duration-300 ease-out ${isScrolled ? 'py-2' : 'py-4'}`}>
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center">
-              <img 
-                src="/lovable-uploads/5e0c66c3-0eee-4e98-8870-06dde2529bcb.png" 
-                alt="Me First Group" 
-                className={`transition-all duration-300 ease-out ${isScrolled ? 'h-10' : 'h-12'} w-auto`}
-              />
-            </Link>
-          </div>
+  const navLinks = [
+    { label: "Home", to: "/", type: "link" as const },
+    { label: "Services", action: () => scrollToSection("services"), type: "button" as const },
+    { label: "Our Fleet", to: "/fleet", icon: Truck, type: "link" as const },
+    { label: "Footprint", to: "/footprint", icon: MapPin, type: "link" as const },
+    { label: "About Us", to: "/about", type: "link" as const },
+    { label: "Our Team", to: "/director", icon: Users, type: "link" as const },
+  ];
 
-          <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-transport-gray hover:text-transport-orange font-medium transition-colors duration-200">
-              Home
-            </Link>
-            <button 
-              onClick={() => scrollToSection('services')} 
-              className="text-transport-gray hover:text-transport-orange font-medium transition-colors duration-200"
+  return (
+    <nav
+      className={`sticky top-0 z-50 transition-all duration-300 ease-out ${
+        isScrolled
+          ? "bg-white/90 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.08)] py-2"
+          : "bg-white py-4"
+      }`}
+    >
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center">
+          <Link to="/" className="flex items-center">
+            <img
+              src="/lovable-uploads/5e0c66c3-0eee-4e98-8870-06dde2529bcb.png"
+              alt="Me First Group"
+              className={`transition-all duration-300 ease-out ${isScrolled ? "h-10" : "h-12"} w-auto`}
+            />
+          </Link>
+
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center space-x-1">
+            {navLinks.map((link) =>
+              link.type === "link" ? (
+                <Link
+                  key={link.label}
+                  to={link.to!}
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200 flex items-center gap-1.5"
+                  onClick={() => window.scrollTo(0, 0)}
+                >
+                  {link.icon && <link.icon size={15} />}
+                  {link.label}
+                </Link>
+              ) : (
+                <button
+                  key={link.label}
+                  onClick={link.action}
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200"
+                >
+                  {link.label}
+                </button>
+              )
+            )}
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="ml-2 btn-gradient !px-5 !py-2.5 !text-sm inline-flex items-center gap-2 !rounded-lg"
             >
-              Services
-            </button>
-            <Link 
-              to="/fleet" 
-              className="text-transport-gray hover:text-transport-orange font-medium transition-colors duration-200 flex items-center"
-              onClick={() => window.scrollTo(0, 0)}
-            >
-              <Truck size={16} className="mr-1" />
-              Our Fleet
-            </Link>
-            <Link 
-              to="/footprint" 
-              className="text-transport-gray hover:text-transport-orange font-medium transition-colors duration-200 flex items-center"
-              onClick={() => window.scrollTo(0, 0)}
-            >
-              <MapPin size={16} className="mr-1" />
-              Footprint
-            </Link>
-            <Link 
-              to="/about" 
-              className="text-transport-gray hover:text-transport-orange font-medium transition-colors duration-200"
-              onClick={() => window.scrollTo(0, 0)}
-            >
-              About Us
-            </Link>
-            <Link 
-              to="/director" 
-              className="text-transport-gray hover:text-transport-orange font-medium transition-colors duration-200 flex items-center"
-              onClick={() => window.scrollTo(0, 0)}
-            >
-              <Users size={16} className="mr-1" />
-              Our Team
-            </Link>
-            <button 
-              onClick={() => scrollToSection('contact')} 
-              className="bg-transport-orange text-white px-4 py-2 rounded hover:bg-opacity-90 transition-all duration-200 flex items-center"
-            >
-              <Phone size={16} className="mr-2" />
+              <Phone size={15} />
               Contact Us
             </button>
           </div>
 
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={toggleMenu}
-              className="text-transport-gray p-2 focus:outline-none transition-colors duration-200"
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
+          {/* Mobile toggle */}
+          <button onClick={toggleMenu} className="md:hidden p-2 text-foreground">
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
 
+        {/* Mobile menu */}
         {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="flex flex-col space-y-4 px-4 py-6 bg-white border-t animate-fade-in">
-              <Link 
-                to="/" 
-                className="text-transport-gray hover:text-transport-orange font-medium transition-colors duration-200"
-                onClick={() => setIsMenuOpen(false)}
+          <div className="md:hidden animate-fade-in">
+            <div className="flex flex-col space-y-1 py-4 border-t border-border mt-2">
+              {navLinks.map((link) =>
+                link.type === "link" ? (
+                  <Link
+                    key={link.label}
+                    to={link.to!}
+                    className="px-4 py-3 rounded-lg text-foreground hover:bg-accent transition-colors flex items-center gap-2 font-medium"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      window.scrollTo(0, 0);
+                    }}
+                  >
+                    {link.icon && <link.icon size={16} />}
+                    {link.label}
+                  </Link>
+                ) : (
+                  <button
+                    key={link.label}
+                    onClick={link.action}
+                    className="px-4 py-3 rounded-lg text-foreground hover:bg-accent transition-colors text-left font-medium"
+                  >
+                    {link.label}
+                  </button>
+                )
+              )}
+              <button
+                onClick={() => scrollToSection("contact")}
+                className="btn-gradient !rounded-lg flex items-center justify-center gap-2 mt-2"
               >
-                Home
-              </Link>
-              <button 
-                onClick={() => scrollToSection('services')} 
-                className="text-transport-gray hover:text-transport-orange font-medium text-left transition-colors duration-200"
-              >
-                Services
-              </button>
-              <Link 
-                to="/fleet" 
-                className="text-transport-gray hover:text-transport-orange font-medium text-left flex items-center transition-colors duration-200"
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  window.scrollTo(0, 0);
-                }}
-              >
-                <Truck size={16} className="mr-1" />
-                Our Fleet
-              </Link>
-              <Link 
-                to="/footprint" 
-                className="text-transport-gray hover:text-transport-orange font-medium text-left flex items-center transition-colors duration-200"
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  window.scrollTo(0, 0);
-                }}
-              >
-                <MapPin size={16} className="mr-1" />
-                Footprint
-              </Link>
-              <Link 
-                to="/about" 
-                className="text-transport-gray hover:text-transport-orange font-medium text-left transition-colors duration-200"
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  window.scrollTo(0, 0);
-                }}
-              >
-                About Us
-              </Link>
-              <Link 
-                to="/director" 
-                className="text-transport-gray hover:text-transport-orange font-medium text-left flex items-center transition-colors duration-200"
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  window.scrollTo(0, 0);
-                }}
-              >
-                <Users size={16} className="mr-1" />
-                Our Team
-              </Link>
-              <button 
-                onClick={() => scrollToSection('contact')} 
-                className="bg-transport-orange text-white px-4 py-2 rounded text-center flex items-center justify-center transition-all duration-200"
-              >
-                <Phone size={16} className="mr-2" />
+                <Phone size={16} />
                 Contact Us
               </button>
             </div>

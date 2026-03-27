@@ -1,51 +1,51 @@
-
 import React from "react";
 import { Target, Eye } from "lucide-react";
+import { motion } from "framer-motion";
 
 const MissionVision = () => {
   return (
-    <section className="bg-white py-16">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* Mission Section */}
-          <div className="bg-gray-50 p-8 rounded-lg shadow-sm">
-            <div className="flex items-center mb-6">
-              <div className="bg-transport-blue bg-opacity-10 p-4 rounded-full mr-4 text-transport-blue">
-                <Target size={32} />
+    <section className="section-padding bg-card">
+      <div className="container mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {[
+            {
+              icon: Target,
+              title: "Our Mission",
+              paragraphs: [
+                "To provide exceptional transport and logistics services to the mining industry, ensuring safe, reliable, and efficient delivery of mining commodities while maintaining the highest standards of customer service and operational excellence.",
+                "We are committed to supporting the growth of the mining sector by offering specialized transport solutions that meet the unique challenges of moving valuable mining commodities across Southern Africa.",
+              ],
+            },
+            {
+              icon: Eye,
+              title: "Our Vision",
+              paragraphs: [
+                "To be the leading transport partner for the mining industry in Southern Africa, recognized for our reliability, safety record, and commitment to excellence in all aspects of our operations.",
+                "We envision expanding our footprint across the region while maintaining our core values of integrity, professionalism, and customer focus, becoming the first choice for mining companies who need dependable transport solutions.",
+              ],
+            },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              className="bg-accent p-8 rounded-2xl border border-border shadow-sm card-hover"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.15 }}
+            >
+              <div className="flex items-center mb-6 gap-4">
+                <div className="w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center">
+                  <item.icon size={28} className="text-white" />
+                </div>
+                <h2 className="text-2xl font-bold gradient-text">{item.title}</h2>
               </div>
-              <h2 className="text-2xl font-bold text-transport-blue">Our Mission</h2>
-            </div>
-            <p className="text-transport-gray leading-relaxed mb-6">
-              To provide exceptional transport and logistics services to the mining industry, 
-              ensuring safe, reliable, and efficient delivery of mining commodities while 
-              maintaining the highest standards of customer service and operational excellence.
-            </p>
-            <p className="text-transport-gray leading-relaxed">
-              We are committed to supporting the growth of the mining sector by offering 
-              specialized transport solutions that meet the unique challenges of moving valuable 
-              mining commodities across Southern Africa.
-            </p>
-          </div>
-
-          {/* Vision Section */}
-          <div className="bg-gray-50 p-8 rounded-lg shadow-sm">
-            <div className="flex items-center mb-6">
-              <div className="bg-transport-blue bg-opacity-10 p-4 rounded-full mr-4 text-transport-blue">
-                <Eye size={32} />
-              </div>
-              <h2 className="text-2xl font-bold text-transport-blue">Our Vision</h2>
-            </div>
-            <p className="text-transport-gray leading-relaxed mb-6">
-              To be the leading transport partner for the mining industry in Southern Africa, 
-              recognized for our reliability, safety record, and commitment to excellence in 
-              all aspects of our operations.
-            </p>
-            <p className="text-transport-gray leading-relaxed">
-              We envision expanding our footprint across the region while maintaining our core 
-              values of integrity, professionalism, and customer focus, becoming the first choice 
-              for mining companies who need dependable transport solutions.
-            </p>
-          </div>
+              {item.paragraphs.map((p, j) => (
+                <p key={j} className="text-muted-foreground leading-relaxed mb-4 last:mb-0">
+                  {p}
+                </p>
+              ))}
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
