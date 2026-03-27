@@ -30,6 +30,14 @@ const ContactSection = () => {
       return;
     }
 
+    // Save to database
+    await supabase.from("contact_enquiries").insert({
+      name: formData.name,
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+    });
+
     const mailtoLink = `mailto:mefirstgp@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`)}`;
     window.location.href = mailtoLink;
 
