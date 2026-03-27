@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { MapPin, Phone, Mail, Clock, Globe, Send } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { motion } from "framer-motion";
 import { motion } from "framer-motion";
 
 const ContactSection = () => {
