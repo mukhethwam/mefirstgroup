@@ -14,6 +14,7 @@ import Contact from "./pages/Contact";
 import Footprint from "./pages/Footprint";
 import PremiumFleet from "./pages/PremiumFleet";
 import NotFound from "./pages/NotFound";
+import Admin from "./pages/Admin";
 
 // Create a client with proper error handling
 const queryClient = new QueryClient({
@@ -110,6 +111,7 @@ const AppWrapper = () => {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/footprint" element={<Footprint />} />
                 <Route path="/fleet" element={<PremiumFleet />} />
+                <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </HashRouter>
