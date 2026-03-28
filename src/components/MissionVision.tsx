@@ -4,8 +4,11 @@ import { motion } from "framer-motion";
 
 const MissionVision = () => {
   return (
-    <section className="section-padding bg-card">
-      <div className="container mx-auto">
+    <section className="section-padding bg-card relative overflow-hidden">
+      <div className="absolute -top-20 right-0 w-72 h-72 rounded-full bg-[hsl(270,70%,50%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-20 left-0 w-72 h-72 rounded-full bg-[hsl(330,80%,55%)/0.04] blur-3xl pointer-events-none" />
+
+      <div className="container mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {[
             {
@@ -35,7 +38,7 @@ const MissionVision = () => {
             >
               <div className="flex items-center mb-6 gap-4">
                 <div className="w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center">
-                  <item.icon size={28} className="text-white" />
+                  <item.icon size={28} className="text-primary-foreground" />
                 </div>
                 <h2 className="text-2xl font-bold gradient-text">{item.title}</h2>
               </div>

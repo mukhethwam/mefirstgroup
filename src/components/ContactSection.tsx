@@ -29,7 +29,6 @@ const ContactSection = () => {
       return;
     }
 
-    // Save to database
     await supabase.from("contact_enquiries").insert({
       name: formData.name,
       email: formData.email,
@@ -54,8 +53,11 @@ const ContactSection = () => {
   ];
 
   return (
-    <section id="contact" className="section-padding bg-card">
-      <div className="container mx-auto">
+    <section id="contact" className="section-padding bg-card relative overflow-hidden">
+      <div className="absolute -top-20 right-0 w-80 h-80 rounded-full bg-[hsl(270,70%,50%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-20 left-0 w-80 h-80 rounded-full bg-[hsl(330,80%,55%)/0.04] blur-3xl pointer-events-none" />
+
+      <div className="container mx-auto relative z-10">
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -80,7 +82,7 @@ const ContactSection = () => {
               {contactInfo.map((item, i) => (
                 <div key={i} className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center flex-shrink-0">
-                    <item.icon size={20} className="text-white" />
+                    <item.icon size={20} className="text-primary-foreground" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground mb-1">{item.title}</h4>

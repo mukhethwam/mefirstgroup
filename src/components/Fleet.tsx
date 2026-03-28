@@ -31,8 +31,11 @@ const Fleet = () => {
   ];
 
   return (
-    <section id="fleet" className="section-padding bg-background">
-      <div className="container mx-auto">
+    <section id="fleet" className="section-padding bg-background relative overflow-hidden">
+      <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-[hsl(270,70%,50%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-[hsl(330,80%,55%)/0.04] blur-3xl pointer-events-none" />
+
+      <div className="container mx-auto relative z-10">
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -68,7 +71,7 @@ const Fleet = () => {
                   transition={{ delay: index * 0.1 }}
                 >
                   <div className="w-6 h-6 rounded-full gradient-bg-secondary flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="text-white" size={14} />
+                    <CheckCircle className="text-secondary-foreground" size={14} />
                   </div>
                   <span className="text-foreground font-medium">{feature}</span>
                 </motion.div>
@@ -90,7 +93,7 @@ const Fleet = () => {
             <div className="rounded-3xl overflow-hidden shadow-2xl">
               <img src={fleetImages[0].src} alt={fleetImages[0].alt} className="object-cover w-full h-80 md:h-96" />
             </div>
-            <div className="absolute -bottom-4 -right-4 gradient-bg-secondary text-white p-5 rounded-2xl shadow-xl hidden md:block">
+            <div className="absolute -bottom-4 -right-4 gradient-bg-secondary text-secondary-foreground p-5 rounded-2xl shadow-xl hidden md:block">
               <p className="text-3xl font-bold">34-TON</p>
               <p className="text-sm opacity-90">Side Tipper Capacity</p>
             </div>

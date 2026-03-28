@@ -10,8 +10,12 @@ const AboutUs = () => {
   ];
 
   return (
-    <section id="about" className="section-padding bg-background">
-      <div className="container mx-auto">
+    <section id="about" className="section-padding bg-background relative overflow-hidden">
+      {/* Aura bg effects */}
+      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[hsl(270,70%,50%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-[hsl(330,80%,55%)/0.04] blur-3xl pointer-events-none" />
+
+      <div className="container mx-auto relative z-10">
         <motion.div
           className="text-center mb-16 max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
@@ -36,7 +40,7 @@ const AboutUs = () => {
               viewport={{ once: true }}
               transition={{ delay: index * 0.15 }}
             >
-              <div className="w-16 h-16 rounded-2xl gradient-bg flex items-center justify-center mb-5 text-white">
+              <div className="w-16 h-16 rounded-2xl gradient-bg flex items-center justify-center mb-5 text-primary-foreground">
                 {value.icon}
               </div>
               <h3 className="text-xl font-bold mb-3 text-foreground">{value.title}</h3>
