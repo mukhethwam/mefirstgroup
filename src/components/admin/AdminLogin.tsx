@@ -23,16 +23,17 @@ const AdminLogin = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
-      {/* Background decoration */}
+      {/* Aura background decoration */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-[hsl(25,100%,50%)/0.08] blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-[hsl(220,70%,25%)/0.08] blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-gradient-to-bl from-[hsl(330,80%,55%)/0.1] via-[hsl(270,70%,50%)/0.06] to-transparent blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[hsl(200,90%,50%)/0.08] via-[hsl(270,60%,45%)/0.06] to-transparent blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-[hsl(270,60%,50%)/0.06] blur-3xl" />
       </div>
 
       <div className="w-full max-w-md mx-4 relative z-10">
         <div className="text-center mb-8">
           <div className="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Lock className="text-white" size={28} />
+            <Lock className="text-primary-foreground" size={28} />
           </div>
           <h1 className="text-3xl font-bold gradient-text">Admin Login</h1>
           <p className="text-muted-foreground mt-2">Sign in to manage your website</p>

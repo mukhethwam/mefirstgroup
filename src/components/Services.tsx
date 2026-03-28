@@ -19,7 +19,7 @@ const ServiceCard = ({ icon, title, description, index }: ServiceCardProps) => {
       className="group bg-card rounded-2xl p-6 shadow-sm border border-border card-hover relative overflow-hidden"
     >
       <div className="absolute top-0 left-0 right-0 h-1 gradient-bg-secondary rounded-t-2xl" />
-      <div className="w-14 h-14 rounded-xl gradient-bg-secondary flex items-center justify-center mb-5 text-white group-hover:scale-110 transition-transform duration-300">
+      <div className="w-14 h-14 rounded-xl gradient-bg flex items-center justify-center mb-5 text-primary-foreground group-hover:scale-110 transition-transform duration-300">
         {icon}
       </div>
       <h3 className="text-lg font-bold mb-3 text-foreground">{title}</h3>
@@ -70,15 +70,17 @@ const Services = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="gradient-bg-dark p-10 text-white">
-            <h3 className="text-3xl font-bold mb-8 text-center">Why Choose Me First Group?</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="gradient-bg-dark p-10 text-white relative overflow-hidden">
+            <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-[hsl(330,80%,55%)/0.1] blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-[hsl(200,90%,50%)/0.1] blur-3xl pointer-events-none" />
+            <h3 className="text-3xl font-bold mb-8 text-center relative z-10">Why Choose Me First Group?</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
               {[
                 { title: "Diverse Fleet Capability", desc: "Our versatile fleet handles everything from bulk materials to temperature-sensitive goods." },
                 { title: "Industry Expertise", desc: "Years of experience across multiple sectors with specialized handling requirements." },
                 { title: "Nationwide Coverage", desc: "Comprehensive transport network covering urban centers and remote locations." },
               ].map((item, i) => (
-                <div key={i} className="text-center glass-card-dark rounded-2xl p-6">
+                <div key={i} className="text-center glass-card-dark rounded-2xl p-6 border-[hsl(270,60%,50%)/0.2]">
                   <h4 className="font-bold text-lg mb-2">{item.title}</h4>
                   <p className="text-white/70 text-sm">{item.desc}</p>
                 </div>
