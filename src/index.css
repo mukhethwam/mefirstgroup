@@ -7,49 +7,51 @@
 
 @layer base {
   :root {
-    --background: 220 20% 97%;
-    --foreground: 220 30% 15%;
+    --background: 240 15% 97%;
+    --foreground: 240 20% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 30% 15%;
+    --card-foreground: 240 20% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 30% 15%;
+    --popover-foreground: 240 20% 12%;
 
-    --primary: 220 70% 25%;
+    --primary: 270 65% 45%;
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 25 100% 50%;
+    --secondary: 330 80% 55%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 220 15% 94%;
-    --muted-foreground: 220 15% 45%;
+    --muted: 260 20% 94%;
+    --muted-foreground: 260 15% 45%;
 
-    --accent: 220 60% 95%;
-    --accent-foreground: 220 30% 15%;
+    --accent: 270 40% 95%;
+    --accent-foreground: 270 30% 15%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 20% 90%;
-    --input: 220 20% 90%;
-    --ring: 220 70% 25%;
+    --border: 270 15% 90%;
+    --input: 270 15% 90%;
+    --ring: 270 65% 45%;
 
     --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary: 270 65% 45%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 270 20% 95%;
+    --sidebar-accent-foreground: 270 30% 15%;
+    --sidebar-border: 270 15% 91%;
+    --sidebar-ring: 270 65% 45%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(220, 70%, 20%), hsl(220, 80%, 40%), hsl(200, 90%, 50%));
-    --gradient-secondary: linear-gradient(135deg, hsl(25, 100%, 50%), hsl(35, 100%, 55%), hsl(45, 100%, 60%));
-    --gradient-dark: linear-gradient(135deg, hsl(220, 50%, 10%), hsl(220, 60%, 20%), hsl(210, 70%, 30%));
+    --gradient-primary: linear-gradient(135deg, hsl(270, 70%, 40%), hsl(300, 75%, 50%), hsl(330, 80%, 55%));
+    --gradient-secondary: linear-gradient(135deg, hsl(330, 80%, 55%), hsl(350, 85%, 60%), hsl(20, 90%, 60%));
+    --gradient-dark: linear-gradient(135deg, hsl(270, 60%, 8%), hsl(280, 50%, 15%), hsl(300, 40%, 20%));
+    --gradient-aura: linear-gradient(135deg, hsl(270, 70%, 45%), hsl(200, 80%, 50%), hsl(330, 80%, 55%));
     --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    --gradient-aurora: linear-gradient(135deg, hsl(280, 70%, 50%), hsl(200, 90%, 55%), hsl(160, 80%, 45%), hsl(330, 75%, 55%));
   }
 
   html {
@@ -137,6 +139,13 @@
     background-clip: text;
   }
 
+  .gradient-text-aura {
+    background: var(--gradient-aura);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
   .gradient-bg {
     background: var(--gradient-primary);
   }
@@ -147,6 +156,14 @@
 
   .gradient-bg-dark {
     background: var(--gradient-dark);
+  }
+
+  .gradient-bg-aura {
+    background: var(--gradient-aura);
+  }
+
+  .gradient-bg-aurora {
+    background: var(--gradient-aurora);
   }
 
   .glass-card {
@@ -167,7 +184,7 @@
 
   .card-hover:hover {
     transform: translateY(-8px);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 25px 50px -12px hsla(270, 70%, 45%, 0.2);
   }
 
   .btn-gradient {
@@ -177,7 +194,7 @@
 
   .btn-gradient:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 40px -10px hsl(25, 100%, 50%, 0.5);
+    box-shadow: 0 10px 40px -10px hsla(330, 80%, 55%, 0.5);
   }
 
   .btn-gradient-primary {
@@ -187,7 +204,27 @@
 
   .btn-gradient-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 40px -10px hsl(220, 70%, 25%, 0.5);
+    box-shadow: 0 10px 40px -10px hsla(270, 65%, 45%, 0.5);
+  }
+
+  .aura-glow {
+    position: relative;
+  }
+
+  .aura-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: var(--gradient-aura);
+    z-index: -1;
+    filter: blur(12px);
+    opacity: 0.4;
+    transition: opacity 0.3s;
+  }
+
+  .aura-glow:hover::before {
+    opacity: 0.7;
   }
 }
 

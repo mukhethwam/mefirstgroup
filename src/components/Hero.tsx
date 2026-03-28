@@ -13,13 +13,14 @@ const Hero = () => {
             "url('https://images.unsplash.com/photo-1519003722824-194d4455a60c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2175&q=80')",
         }}
       />
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(220,70%,12%)] via-[hsl(220,60%,18%)/0.92] to-[hsl(200,80%,25%)/0.85]" />
+      {/* Aura Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(270,70%,12%)] via-[hsl(280,60%,18%)/0.92] to-[hsl(330,60%,20%)/0.85]" />
 
-      {/* Animated shapes */}
+      {/* Animated aura shapes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-gradient-to-br from-[hsl(25,100%,50%)/0.15] to-transparent blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-gradient-to-tr from-[hsl(200,90%,50%)/0.15] to-transparent blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-[hsl(330,80%,55%)/0.2] via-[hsl(270,70%,50%)/0.1] to-transparent blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[hsl(200,90%,50%)/0.15] via-[hsl(270,60%,45%)/0.1] to-transparent blur-3xl" />
+        <div className="absolute top-1/3 right-1/4 w-72 h-72 rounded-full bg-gradient-to-br from-[hsl(270,80%,60%)/0.1] to-[hsl(330,70%,50%)/0.08] blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 py-28 md:py-36 relative z-10">
@@ -30,12 +31,12 @@ const Hero = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <motion.div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card-dark text-white/90 text-sm font-medium mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card-dark text-white/90 text-sm font-medium mb-8 border-[hsl(270,60%,50%)/0.3]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <Shield size={16} className="text-[hsl(25,100%,55%)]" />
+            <Shield size={16} className="text-[hsl(330,80%,60%)]" />
             Trusted Transport Partner Since 2021
           </motion.div>
 
@@ -57,7 +58,7 @@ const Hero = () => {
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center justify-center px-8 py-3 rounded-xl font-semibold text-lg text-white border-2 border-white/30 backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
+              className="inline-flex items-center justify-center px-8 py-3 rounded-xl font-semibold text-lg text-white border-2 border-[hsl(270,60%,50%)/0.4] backdrop-blur-sm hover:bg-[hsl(270,60%,50%)/0.15] transition-all duration-300"
             >
               Request a Quote
               <PhoneForwarded className="ml-2" size={20} />
@@ -76,8 +77,8 @@ const Hero = () => {
               { icon: Shield, label: "Safety Record", value: "100%" },
               { icon: Clock, label: "On-Time Rate", value: "99%" },
             ].map((stat, i) => (
-              <div key={i} className="text-center glass-card-dark rounded-xl p-4">
-                <stat.icon size={20} className="mx-auto mb-1 text-[hsl(25,100%,55%)]" />
+              <div key={i} className="text-center glass-card-dark rounded-xl p-4 border-[hsl(270,60%,50%)/0.2]">
+                <stat.icon size={20} className="mx-auto mb-1 text-[hsl(330,80%,60%)]" />
                 <p className="text-2xl font-bold text-white">{stat.value}</p>
                 <p className="text-xs text-white/60">{stat.label}</p>
               </div>
