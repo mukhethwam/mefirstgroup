@@ -32,8 +32,8 @@ const Fleet = () => {
 
   return (
     <section id="fleet" className="section-padding bg-background relative overflow-hidden">
-      <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-[hsl(270,70%,50%)/0.04] blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-[hsl(330,80%,55%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-[hsl(215,70%,40%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-[hsl(25,90%,50%)/0.04] blur-3xl pointer-events-none" />
 
       <div className="container mx-auto relative z-10">
         <motion.div

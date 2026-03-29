@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 const MissionVision = () => {
   return (
     <section className="section-padding bg-card relative overflow-hidden">
-      <div className="absolute -top-20 right-0 w-72 h-72 rounded-full bg-[hsl(270,70%,50%)/0.04] blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-20 left-0 w-72 h-72 rounded-full bg-[hsl(330,80%,55%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute -top-20 right-0 w-72 h-72 rounded-full bg-[hsl(215,70%,40%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-20 left-0 w-72 h-72 rounded-full bg-[hsl(25,90%,50%)/0.04] blur-3xl pointer-events-none" />
 
       <div className="container mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

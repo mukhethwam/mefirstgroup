@@ -11,9 +11,8 @@ const AboutUs = () => {
 
   return (
     <section id="about" className="section-padding bg-background relative overflow-hidden">
-      {/* Aura bg effects */}
-      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[hsl(270,70%,50%)/0.04] blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-[hsl(330,80%,55%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[hsl(215,70%,40%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-[hsl(25,90%,50%)/0.04] blur-3xl pointer-events-none" />
 
       <div className="container mx-auto relative z-10">
         <motion.div
