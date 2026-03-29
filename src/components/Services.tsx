@@ -62,7 +62,6 @@ const Services = () => {
           ))}
         </div>
 
-        {/* Why Choose Us */}
         <motion.div
           className="mt-20 rounded-3xl overflow-hidden shadow-xl"
           initial={{ opacity: 0, y: 30 }}
@@ -71,8 +70,8 @@ const Services = () => {
           transition={{ duration: 0.6 }}
         >
           <div className="gradient-bg-dark p-10 text-white relative overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-[hsl(330,80%,55%)/0.1] blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-[hsl(200,90%,50%)/0.1] blur-3xl pointer-events-none" />
+            <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-[hsl(25,90%,50%)/0.08] blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-[hsl(200,80%,45%)/0.08] blur-3xl pointer-events-none" />
             <h3 className="text-3xl font-bold mb-8 text-center relative z-10">Why Choose Me First Group?</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
               {[
@@ -80,7 +79,7 @@ const Services = () => {
                 { title: "Industry Expertise", desc: "Years of experience across multiple sectors with specialized handling requirements." },
                 { title: "Nationwide Coverage", desc: "Comprehensive transport network covering urban centers and remote locations." },
               ].map((item, i) => (
-                <div key={i} className="text-center glass-card-dark rounded-2xl p-6 border-[hsl(270,60%,50%)/0.2]">
+                <div key={i} className="text-center glass-card-dark rounded-2xl p-6 border-[hsl(215,60%,40%)/0.2]">
                   <h4 className="font-bold text-lg mb-2">{item.title}</h4>
                   <p className="text-white/70 text-sm">{item.desc}</p>
                 </div>

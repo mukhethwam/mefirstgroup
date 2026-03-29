@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Menu, X, Phone, MapPin, Truck, Users } from "lucide-react";
+import { Menu, X, Phone, MapPin, Truck, Users, Lock } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = () => {
@@ -55,10 +55,9 @@ const Navbar = () => {
     <nav
       className={`sticky top-0 z-50 transition-all duration-300 ease-out ${
         isScrolled
-          ? "bg-white/85 backdrop-blur-xl shadow-[0_4px_30px_rgba(120,50,180,0.08)] py-2"
-          : "bg-white py-4"
+          ? "bg-primary/95 backdrop-blur-xl shadow-[0_4px_30px_rgba(20,50,100,0.15)] py-2"
+          : "bg-primary py-4"
       }`}
-      style={isScrolled ? { borderBottom: '1px solid hsla(270, 50%, 80%, 0.3)' } : {}}
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
@@ -77,7 +76,7 @@ const Navbar = () => {
                 <Link
                   key={link.label}
                   to={link.to!}
-                  className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200 flex items-center gap-1.5"
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 transition-all duration-200 flex items-center gap-1.5"
                   onClick={() => window.scrollTo(0, 0)}
                 >
                   {link.icon && <link.icon size={15} />}
@@ -87,12 +86,19 @@ const Navbar = () => {
                 <button
                   key={link.label}
                   onClick={link.action}
-                  className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200"
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 transition-all duration-200"
                 >
                   {link.label}
                 </button>
               )
             )}
+            <Link
+              to="/admin"
+              className="px-4 py-2 rounded-lg text-sm font-medium text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 transition-all duration-200 flex items-center gap-1.5"
+            >
+              <Lock size={15} />
+              Admin
+            </Link>
             <button
               onClick={() => scrollToSection("contact")}
               className="ml-2 btn-gradient !px-5 !py-2.5 !text-sm inline-flex items-center gap-2 !rounded-lg"
@@ -103,7 +109,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile toggle */}
-          <button onClick={toggleMenu} className="md:hidden p-2 text-foreground">
+          <button onClick={toggleMenu} className="md:hidden p-2 text-primary-foreground">
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -111,13 +117,13 @@ const Navbar = () => {
         {/* Mobile menu */}
         {isMenuOpen && (
           <div className="md:hidden animate-fade-in">
-            <div className="flex flex-col space-y-1 py-4 border-t border-border mt-2">
+            <div className="flex flex-col space-y-1 py-4 border-t border-primary-foreground/20 mt-2">
               {navLinks.map((link) =>
                 link.type === "link" ? (
                   <Link
                     key={link.label}
                     to={link.to!}
-                    className="px-4 py-3 rounded-lg text-foreground hover:bg-accent transition-colors flex items-center gap-2 font-medium"
+                    className="px-4 py-3 rounded-lg text-primary-foreground hover:bg-primary-foreground/10 transition-colors flex items-center gap-2 font-medium"
                     onClick={() => {
                       setIsMenuOpen(false);
                       window.scrollTo(0, 0);
@@ -130,12 +136,20 @@ const Navbar = () => {
                   <button
                     key={link.label}
                     onClick={link.action}
-                    className="px-4 py-3 rounded-lg text-foreground hover:bg-accent transition-colors text-left font-medium"
+                    className="px-4 py-3 rounded-lg text-primary-foreground hover:bg-primary-foreground/10 transition-colors text-left font-medium"
                   >
                     {link.label}
                   </button>
                 )
               )}
+              <Link
+                to="/admin"
+                className="px-4 py-3 rounded-lg text-primary-foreground hover:bg-primary-foreground/10 transition-colors flex items-center gap-2 font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Lock size={16} />
+                Admin
+              </Link>
               <button
                 onClick={() => scrollToSection("contact")}
                 className="btn-gradient !rounded-lg flex items-center justify-center gap-2 mt-2"

@@ -25,8 +25,8 @@ const GallerySlideshow = () => {
 
   return (
     <section className="section-padding bg-card relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-96 h-96 rounded-full bg-[hsl(270,60%,50%)/0.04] blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-[hsl(330,80%,55%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute top-0 left-0 w-96 h-96 rounded-full bg-[hsl(215,60%,40%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-[hsl(25,90%,50%)/0.04] blur-3xl pointer-events-none" />
 
       <div className="container mx-auto relative z-10">
         <motion.div
@@ -51,7 +51,7 @@ const GallerySlideshow = () => {
                 }`}
               >
                 <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[hsl(270,50%,10%)/0.8] via-[hsl(270,40%,15%)/0.2] to-transparent flex items-end">
+                <div className="absolute inset-0 bg-gradient-to-t from-[hsl(215,50%,10%)/0.8] via-[hsl(215,40%,15%)/0.2] to-transparent flex items-end">
                   <div className="p-8 md:p-12">
                     <h3 className="text-2xl md:text-4xl font-bold mb-2 text-white">{slide.title}</h3>
                     <p className="text-base md:text-lg text-white/80 max-w-xl">{slide.message}</p>
@@ -63,13 +63,13 @@ const GallerySlideshow = () => {
 
           <button
             onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[hsl(270,60%,50%)/0.2] backdrop-blur-md border border-[hsl(270,60%,50%)/0.3] flex items-center justify-center text-white hover:bg-[hsl(270,60%,50%)/0.4] transition-all"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[hsl(215,60%,30%)/0.3] backdrop-blur-md border border-[hsl(215,60%,40%)/0.3] flex items-center justify-center text-white hover:bg-[hsl(215,60%,30%)/0.5] transition-all"
           >
             <ChevronLeft size={24} />
           </button>
           <button
             onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[hsl(270,60%,50%)/0.2] backdrop-blur-md border border-[hsl(270,60%,50%)/0.3] flex items-center justify-center text-white hover:bg-[hsl(270,60%,50%)/0.4] transition-all"
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[hsl(215,60%,30%)/0.3] backdrop-blur-md border border-[hsl(215,60%,40%)/0.3] flex items-center justify-center text-white hover:bg-[hsl(215,60%,30%)/0.5] transition-all"
           >
             <ChevronRight size={24} />
           </button>

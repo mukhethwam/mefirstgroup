@@ -7,51 +7,51 @@
 
 @layer base {
   :root {
-    --background: 240 15% 97%;
-    --foreground: 240 20% 12%;
+    --background: 210 20% 96%;
+    --foreground: 215 30% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 240 20% 12%;
+    --card-foreground: 215 30% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 20% 12%;
+    --popover-foreground: 215 30% 12%;
 
-    --primary: 270 65% 45%;
+    --primary: 215 70% 28%;
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 330 80% 55%;
+    --secondary: 25 95% 53%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 260 20% 94%;
-    --muted-foreground: 260 15% 45%;
+    --muted: 210 15% 92%;
+    --muted-foreground: 215 15% 42%;
 
-    --accent: 270 40% 95%;
-    --accent-foreground: 270 30% 15%;
+    --accent: 210 25% 93%;
+    --accent-foreground: 215 30% 15%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 270 15% 90%;
-    --input: 270 15% 90%;
-    --ring: 270 65% 45%;
+    --border: 210 15% 88%;
+    --input: 210 15% 88%;
+    --ring: 215 70% 28%;
 
     --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 270 65% 45%;
+    --sidebar-foreground: 215 20% 26%;
+    --sidebar-primary: 215 70% 28%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 270 20% 95%;
-    --sidebar-accent-foreground: 270 30% 15%;
-    --sidebar-border: 270 15% 91%;
-    --sidebar-ring: 270 65% 45%;
+    --sidebar-accent: 210 20% 94%;
+    --sidebar-accent-foreground: 215 30% 15%;
+    --sidebar-border: 210 15% 90%;
+    --sidebar-ring: 215 70% 28%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(270, 70%, 40%), hsl(300, 75%, 50%), hsl(330, 80%, 55%));
-    --gradient-secondary: linear-gradient(135deg, hsl(330, 80%, 55%), hsl(350, 85%, 60%), hsl(20, 90%, 60%));
-    --gradient-dark: linear-gradient(135deg, hsl(270, 60%, 8%), hsl(280, 50%, 15%), hsl(300, 40%, 20%));
-    --gradient-aura: linear-gradient(135deg, hsl(270, 70%, 45%), hsl(200, 80%, 50%), hsl(330, 80%, 55%));
+    --gradient-primary: linear-gradient(135deg, hsl(215, 70%, 28%), hsl(215, 60%, 38%), hsl(200, 65%, 42%));
+    --gradient-secondary: linear-gradient(135deg, hsl(25, 95%, 50%), hsl(15, 90%, 55%), hsl(35, 95%, 55%));
+    --gradient-dark: linear-gradient(135deg, hsl(215, 60%, 10%), hsl(215, 50%, 16%), hsl(210, 45%, 20%));
+    --gradient-aura: linear-gradient(135deg, hsl(215, 70%, 30%), hsl(200, 75%, 40%), hsl(25, 90%, 52%));
     --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-    --gradient-aurora: linear-gradient(135deg, hsl(280, 70%, 50%), hsl(200, 90%, 55%), hsl(160, 80%, 45%), hsl(330, 75%, 55%));
+    --gradient-aurora: linear-gradient(135deg, hsl(215, 70%, 32%), hsl(200, 80%, 42%), hsl(180, 60%, 40%), hsl(25, 90%, 52%));
   }
 
   html {
@@ -184,7 +184,7 @@
 
   .card-hover:hover {
     transform: translateY(-8px);
-    box-shadow: 0 25px 50px -12px hsla(270, 70%, 45%, 0.2);
+    box-shadow: 0 25px 50px -12px hsla(215, 70%, 30%, 0.2);
   }
 
   .btn-gradient {
@@ -194,7 +194,7 @@
 
   .btn-gradient:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 40px -10px hsla(330, 80%, 55%, 0.5);
+    box-shadow: 0 10px 40px -10px hsla(25, 95%, 50%, 0.5);
   }
 
   .btn-gradient-primary {
@@ -204,7 +204,7 @@
 
   .btn-gradient-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 40px -10px hsla(270, 65%, 45%, 0.5);
+    box-shadow: 0 10px 40px -10px hsla(215, 70%, 28%, 0.5);
   }
 
   .aura-glow {
