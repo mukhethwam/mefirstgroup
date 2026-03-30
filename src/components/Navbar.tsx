@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Menu, X, Phone, MapPin, Truck, Users, Lock } from "lucide-react";
+import { Menu, X, Phone, MapPin, Truck, Users } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = () => {
@@ -92,13 +92,6 @@ const Navbar = () => {
                 </button>
               )
             )}
-            <Link
-              to="/admin"
-              className="px-4 py-2 rounded-lg text-sm font-medium text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 transition-all duration-200 flex items-center gap-1.5"
-            >
-              <Lock size={15} />
-              Admin
-            </Link>
             <button
               onClick={() => scrollToSection("contact")}
               className="ml-2 btn-gradient !px-5 !py-2.5 !text-sm inline-flex items-center gap-2 !rounded-lg"
@@ -142,14 +135,6 @@ const Navbar = () => {
                   </button>
                 )
               )}
-              <Link
-                to="/admin"
-                className="px-4 py-3 rounded-lg text-primary-foreground hover:bg-primary-foreground/10 transition-colors flex items-center gap-2 font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <Lock size={16} />
-                Admin
-              </Link>
               <button
                 onClick={() => scrollToSection("contact")}
                 className="btn-gradient !rounded-lg flex items-center justify-center gap-2 mt-2"
