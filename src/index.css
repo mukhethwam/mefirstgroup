@@ -44,7 +44,7 @@
     --sidebar-accent: 210 20% 94%;
     --sidebar-accent-foreground: 215 30% 15%;
     --sidebar-border: 210 15% 90%;
-    --sidebar-ring: 215 70% 28%;
+    --sidebar-ring: 220 60% 22%;
 
     --gradient-primary: linear-gradient(135deg, hsl(215, 70%, 28%), hsl(215, 60%, 38%), hsl(200, 65%, 42%));
     --gradient-secondary: linear-gradient(135deg, hsl(25, 95%, 50%), hsl(15, 90%, 55%), hsl(35, 95%, 55%));
