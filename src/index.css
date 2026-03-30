@@ -46,12 +46,12 @@
     --sidebar-border: 210 15% 90%;
     --sidebar-ring: 220 60% 22%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(215, 70%, 28%), hsl(215, 60%, 38%), hsl(200, 65%, 42%));
-    --gradient-secondary: linear-gradient(135deg, hsl(25, 95%, 50%), hsl(15, 90%, 55%), hsl(35, 95%, 55%));
-    --gradient-dark: linear-gradient(135deg, hsl(215, 60%, 10%), hsl(215, 50%, 16%), hsl(210, 45%, 20%));
-    --gradient-aura: linear-gradient(135deg, hsl(215, 70%, 30%), hsl(200, 75%, 40%), hsl(25, 90%, 52%));
+    --gradient-primary: linear-gradient(135deg, hsl(220, 60%, 22%), hsl(210, 55%, 32%), hsl(195, 60%, 38%));
+    --gradient-secondary: linear-gradient(135deg, hsl(16, 85%, 52%), hsl(8, 80%, 58%), hsl(25, 88%, 55%));
+    --gradient-dark: linear-gradient(135deg, hsl(220, 50%, 8%), hsl(215, 45%, 14%), hsl(210, 40%, 18%));
+    --gradient-aura: linear-gradient(135deg, hsl(220, 55%, 26%), hsl(195, 65%, 36%), hsl(16, 80%, 52%));
     --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-    --gradient-aurora: linear-gradient(135deg, hsl(215, 70%, 32%), hsl(200, 80%, 42%), hsl(180, 60%, 40%), hsl(25, 90%, 52%));
+    --gradient-aurora: linear-gradient(135deg, hsl(220, 55%, 28%), hsl(195, 70%, 38%), hsl(175, 55%, 36%), hsl(16, 85%, 50%));
   }
 
   html {
