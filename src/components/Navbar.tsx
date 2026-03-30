@@ -135,14 +135,6 @@ const Navbar = () => {
                   </button>
                 )
               )}
-              <Link
-                to="/admin"
-                className="px-4 py-3 rounded-lg text-primary-foreground hover:bg-primary-foreground/10 transition-colors flex items-center gap-2 font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <Lock size={16} />
-                Admin
-              </Link>
               <button
                 onClick={() => scrollToSection("contact")}
                 className="btn-gradient !rounded-lg flex items-center justify-center gap-2 mt-2"
