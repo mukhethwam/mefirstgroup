@@ -13,13 +13,20 @@ import {
   CheckCircle,
   Clock,
   Users,
+  KeyRound,
+  UserPlus,
+  Home,
+  RefreshCw,
+  Search,
+  Mail,
+  Reply,
 } from "lucide-react";
 
 interface AdminDashboardProps {
   session: any;
 }
 
-type Tab = "overview" | "enquiries" | "content";
+type Tab = "overview" | "enquiries" | "content" | "password" | "users";
 
 const AdminDashboard = ({ session }: AdminDashboardProps) => {
   const [activeTab, setActiveTab] = useState<Tab>("overview");
@@ -28,6 +35,7 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
   const [siteContent, setSiteContent] = useState<any[]>([]);
   const [loadingEnquiries, setLoadingEnquiries] = useState(true);
   const [stats, setStats] = useState({ total: 0, unread: 0, read: 0 });
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchEnquiries();
@@ -36,7 +44,7 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
 
   const fetchEnquiries = async () => {
     setLoadingEnquiries(true);
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("contact_enquiries")
       .select("*")
       .order("created_at", { ascending: false });
@@ -64,6 +72,7 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
   };
 
   const deleteEnquiry = async (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this enquiry?")) return;
     await supabase.from("contact_enquiries").delete().eq("id", id);
     fetchEnquiries();
     toast({ title: "Enquiry deleted" });
@@ -83,14 +92,35 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
     }
   };
 
+  const deleteContent = async (id: string) => {
+    if (!window.confirm("Delete this content section?")) return;
+    const { error } = await supabase.from("site_content").delete().eq("id", id);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Content deleted" });
+      fetchSiteContent();
+    }
+  };
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
   };
 
+  const filteredEnquiries = enquiries.filter(
+    (e) =>
+      !searchQuery ||
+      e.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      e.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      e.subject?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const tabs = [
     { id: "overview" as Tab, label: "Overview", icon: LayoutDashboard },
-    { id: "enquiries" as Tab, label: "Enquiries", icon: MessageSquare },
-    { id: "content" as Tab, label: "Site Content", icon: FileText },
+    { id: "enquiries" as Tab, label: "Messages", icon: MessageSquare },
+    { id: "content" as Tab, label: "Content", icon: FileText },
+    { id: "password" as Tab, label: "Password", icon: KeyRound },
+    { id: "users" as Tab, label: "Users", icon: Users },
   ];
 
   return (
@@ -102,7 +132,7 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
         } gradient-bg-dark text-white transition-all duration-300 flex flex-col overflow-hidden flex-shrink-0`}
       >
         <div className="p-4 flex items-center justify-between border-b border-white/10">
-          {sidebarOpen && <h2 className="font-bold text-lg">Admin Panel</h2>}
+          {sidebarOpen && <h2 className="font-bold text-lg font-['Space_Grotesk']">Admin Panel</h2>}
           <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1 hover:bg-white/10 rounded">
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -128,7 +158,14 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
           ))}
         </nav>
 
-        <div className="p-4 border-t border-white/10">
+        <div className="p-4 border-t border-white/10 space-y-1">
+          <a
+            href="/"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:text-white hover:bg-white/10 transition-all"
+          >
+            <Home size={18} />
+            {sidebarOpen && "Back to Site"}
+          </a>
           <button
             onClick={handleSignOut}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:text-white hover:bg-white/10 transition-all"
@@ -142,16 +179,13 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
       {/* Main Content */}
       <main className="flex-1 p-6 md:p-8 overflow-auto">
         <div className="max-w-6xl mx-auto">
-          {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold gradient-text">
-                {activeTab === "overview" && "Dashboard Overview"}
-                {activeTab === "enquiries" && "Contact Enquiries"}
-                {activeTab === "content" && "Site Content"}
+              <h1 className="text-3xl font-bold gradient-text font-['Space_Grotesk']">
+                {tabs.find((t) => t.id === activeTab)?.label || "Dashboard"}
               </h1>
-              <p className="text-muted-foreground mt-1">
-                Welcome back, {session.user.email}
+              <p className="text-muted-foreground mt-1 text-sm">
+                Logged in as {session.user.email}
               </p>
             </div>
             <button
@@ -162,20 +196,21 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
             </button>
           </div>
 
-          {/* Overview Tab */}
+          {/* Overview */}
           {activeTab === "overview" && (
             <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                  { label: "Total Enquiries", value: stats.total, icon: MessageSquare, color: "gradient-bg" },
-                  { label: "Unread", value: stats.unread, icon: Clock, color: "gradient-bg-secondary" },
-                  { label: "Read", value: stats.read, icon: CheckCircle, color: "gradient-bg" },
+                  { label: "Total Messages", value: stats.total, icon: MessageSquare, bg: "gradient-bg" },
+                  { label: "Unread", value: stats.unread, icon: Clock, bg: "gradient-bg-secondary" },
+                  { label: "Read", value: stats.read, icon: CheckCircle, bg: "gradient-bg" },
+                  { label: "Content Sections", value: siteContent.length, icon: FileText, bg: "gradient-bg-secondary" },
                 ].map((stat, i) => (
-                  <div key={i} className="bg-card rounded-2xl border border-border p-6 shadow-sm">
-                    <div className="flex items-center justify-between mb-4">
-                      <p className="text-sm text-muted-foreground">{stat.label}</p>
-                      <div className={`w-10 h-10 ${stat.color} rounded-xl flex items-center justify-center`}>
-                        <stat.icon size={18} className="text-white" />
+                  <div key={i} className="bg-card rounded-2xl border border-border p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">{stat.label}</p>
+                      <div className={`w-9 h-9 ${stat.bg} rounded-xl flex items-center justify-center`}>
+                        <stat.icon size={16} className="text-white" />
                       </div>
                     </div>
                     <p className="text-3xl font-bold text-foreground">{stat.value}</p>
@@ -183,82 +218,112 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
                 ))}
               </div>
 
-              {/* Recent Enquiries */}
               <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
-                <h3 className="text-lg font-bold text-foreground mb-4">Recent Enquiries</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold text-foreground">Recent Messages</h3>
+                  <button onClick={fetchEnquiries} className="text-muted-foreground hover:text-foreground transition-colors">
+                    <RefreshCw size={16} />
+                  </button>
+                </div>
                 {enquiries.slice(0, 5).map((enq) => (
                   <div key={enq.id} className="flex items-center justify-between py-3 border-b border-border last:border-0">
-                    <div>
-                      <p className="font-medium text-foreground">{enq.name}</p>
-                      <p className="text-sm text-muted-foreground">{enq.subject}</p>
+                    <div className="flex items-center gap-3">
+                      <div className={`w-2 h-2 rounded-full ${enq.is_read ? "bg-muted" : "bg-secondary"}`} />
+                      <div>
+                        <p className="font-medium text-foreground text-sm">{enq.name}</p>
+                        <p className="text-xs text-muted-foreground">{enq.subject}</p>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      {!enq.is_read && (
-                        <span className="w-2 h-2 rounded-full gradient-bg-secondary" />
-                      )}
-                      <span className="text-xs text-muted-foreground">
-                        {new Date(enq.created_at).toLocaleDateString()}
-                      </span>
-                    </div>
+                    <span className="text-xs text-muted-foreground">
+                      {new Date(enq.created_at).toLocaleDateString()}
+                    </span>
                   </div>
                 ))}
                 {enquiries.length === 0 && (
-                  <p className="text-muted-foreground text-center py-8">No enquiries yet</p>
+                  <p className="text-muted-foreground text-center py-8">No messages yet</p>
                 )}
               </div>
             </div>
           )}
 
-          {/* Enquiries Tab */}
+          {/* Enquiries / Messages */}
           {activeTab === "enquiries" && (
             <div className="space-y-4">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="relative flex-1">
+                  <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <input
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search messages by name, email, or subject..."
+                    className="w-full pl-10 pr-4 py-2.5 border border-border rounded-xl bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  />
+                </div>
+                <button onClick={fetchEnquiries} className="p-2.5 border border-border rounded-xl hover:bg-accent transition-colors">
+                  <RefreshCw size={16} />
+                </button>
+              </div>
+
               {loadingEnquiries ? (
                 <div className="text-center py-12">
                   <div className="w-8 h-8 border-4 border-border border-t-primary rounded-full animate-spin mx-auto" />
                 </div>
-              ) : enquiries.length === 0 ? (
+              ) : filteredEnquiries.length === 0 ? (
                 <div className="text-center py-12 bg-card rounded-2xl border border-border">
                   <MessageSquare size={48} className="mx-auto text-muted-foreground mb-4" />
-                  <p className="text-muted-foreground">No enquiries yet</p>
+                  <p className="text-muted-foreground">{searchQuery ? "No matching messages" : "No messages yet"}</p>
                 </div>
               ) : (
-                enquiries.map((enq) => (
+                filteredEnquiries.map((enq) => (
                   <div
                     key={enq.id}
-                    className={`bg-card rounded-2xl border p-6 shadow-sm transition-all ${
-                      enq.is_read ? "border-border" : "border-[hsl(25,100%,50%)/0.3] bg-[hsl(25,100%,50%)/0.02]"
+                    className={`bg-card rounded-2xl border p-5 shadow-sm transition-all ${
+                      enq.is_read ? "border-border" : "border-secondary/30 bg-secondary/[0.02]"
                     }`}
                   >
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-bold text-foreground">{enq.name}</h4>
-                          {!enq.is_read && (
-                            <span className="text-xs gradient-bg-secondary text-white px-2 py-0.5 rounded-full">New</span>
-                          )}
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center text-white text-xs font-bold">
+                          {enq.name?.charAt(0)?.toUpperCase()}
                         </div>
-                        <p className="text-sm text-muted-foreground">{enq.email}</p>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-bold text-foreground text-sm">{enq.name}</h4>
+                            {!enq.is_read && (
+                              <span className="text-[10px] gradient-bg-secondary text-white px-1.5 py-0.5 rounded-full font-medium">NEW</span>
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground flex items-center gap-1">
+                            <Mail size={10} /> {enq.email}
+                          </p>
+                        </div>
                       </div>
                       <span className="text-xs text-muted-foreground">
                         {new Date(enq.created_at).toLocaleString()}
                       </span>
                     </div>
-                    <p className="font-semibold text-foreground mb-2">{enq.subject}</p>
+                    <p className="font-semibold text-foreground text-sm mb-1">{enq.subject}</p>
                     <p className="text-muted-foreground text-sm mb-4 whitespace-pre-wrap">{enq.message}</p>
                     <div className="flex gap-2">
                       {!enq.is_read && (
                         <button
                           onClick={() => markAsRead(enq.id)}
-                          className="inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-lg bg-accent text-foreground hover:bg-accent/80 transition-colors"
+                          className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg bg-accent text-foreground hover:bg-accent/80 transition-colors"
                         >
-                          <Eye size={14} /> Mark Read
+                          <Eye size={12} /> Mark Read
                         </button>
                       )}
+                      <a
+                        href={`mailto:${enq.email}?subject=Re: ${encodeURIComponent(enq.subject)}`}
+                        className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                      >
+                        <Reply size={12} /> Reply
+                      </a>
                       <button
                         onClick={() => deleteEnquiry(enq.id)}
-                        className="inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors"
+                        className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors"
                       >
-                        <Trash2 size={14} /> Delete
+                        <Trash2 size={12} /> Delete
                       </button>
                     </div>
                   </div>
@@ -271,9 +336,7 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
           {activeTab === "content" && (
             <div className="space-y-6">
               <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
-                <p className="text-muted-foreground mb-4">
-                  Manage your website content here. Add or edit content sections that appear on your website.
-                </p>
+                <h3 className="font-bold text-foreground mb-3">Add New Content Section</h3>
                 <AddContentForm onAdded={fetchSiteContent} userId={session.user.id} />
               </div>
 
@@ -284,13 +347,217 @@ const AdminDashboard = ({ session }: AdminDashboardProps) => {
                 </div>
               ) : (
                 siteContent.map((item) => (
-                  <ContentEditor key={item.id} item={item} onSave={updateContent} />
+                  <ContentEditor key={item.id} item={item} onSave={updateContent} onDelete={deleteContent} />
                 ))
               )}
             </div>
           )}
+
+          {/* Password Tab */}
+          {activeTab === "password" && <ChangePasswordForm />}
+
+          {/* Users Tab */}
+          {activeTab === "users" && <UserManagement currentUserId={session.user.id} />}
         </div>
       </main>
+    </div>
+  );
+};
+
+// Change Password
+const ChangePasswordForm = () => {
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newPassword.length < 6) {
+      toast({ title: "Password must be at least 6 characters", variant: "destructive" });
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast({ title: "Passwords do not match", variant: "destructive" });
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Password updated successfully" });
+      setNewPassword("");
+      setConfirmPassword("");
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div className="max-w-md">
+      <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center">
+            <KeyRound size={18} className="text-white" />
+          </div>
+          <div>
+            <h3 className="font-bold text-foreground">Change Password</h3>
+            <p className="text-xs text-muted-foreground">Update your admin password</p>
+          </div>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="text-sm font-medium text-foreground mb-1 block">New Password</label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter new password"
+              required
+              minLength={6}
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-foreground mb-1 block">Confirm Password</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Confirm new password"
+              required
+              minLength={6}
+            />
+          </div>
+          <button type="submit" disabled={loading} className="btn-gradient w-full !py-2.5 !text-sm disabled:opacity-50">
+            {loading ? "Updating..." : "Update Password"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+// User Management
+const UserManagement = ({ currentUserId }: { currentUserId: string }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [profiles, setProfiles] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchProfiles();
+  }, []);
+
+  const fetchProfiles = async () => {
+    const { data } = await supabase.from("profiles").select("*").order("created_at", { ascending: false });
+    if (data) setProfiles(data);
+  };
+
+  const handleCreateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) return;
+    if (password.length < 6) {
+      toast({ title: "Password must be at least 6 characters", variant: "destructive" });
+      return;
+    }
+    setLoading(true);
+
+    try {
+      // Use edge function to create user (admin only)
+      const { data, error } = await supabase.functions.invoke("admin-create-user", {
+        body: { email, password, full_name: fullName },
+      });
+
+      if (error) throw error;
+      toast({ title: "User created successfully", description: `Invitation sent to ${email}` });
+      setEmail("");
+      setPassword("");
+      setFullName("");
+      fetchProfiles();
+    } catch (err: any) {
+      toast({ title: "Error creating user", description: err.message, variant: "destructive" });
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-card rounded-2xl border border-border p-6 shadow-sm max-w-lg">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 gradient-bg-secondary rounded-xl flex items-center justify-center">
+            <UserPlus size={18} className="text-white" />
+          </div>
+          <div>
+            <h3 className="font-bold text-foreground">Create New User</h3>
+            <p className="text-xs text-muted-foreground">Add a new user to the system</p>
+          </div>
+        </div>
+        <form onSubmit={handleCreateUser} className="space-y-4">
+          <div>
+            <label className="text-sm font-medium text-foreground mb-1 block">Full Name</label>
+            <input
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="John Doe"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-foreground mb-1 block">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="user@example.com"
+              required
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-foreground mb-1 block">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Min 6 characters"
+              required
+              minLength={6}
+            />
+          </div>
+          <button type="submit" disabled={loading} className="btn-gradient w-full !py-2.5 !text-sm disabled:opacity-50">
+            {loading ? "Creating..." : "Create User"}
+          </button>
+        </form>
+      </div>
+
+      <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
+        <h3 className="font-bold text-foreground mb-4">Registered Users</h3>
+        {profiles.length === 0 ? (
+          <p className="text-muted-foreground text-sm">No registered users found</p>
+        ) : (
+          <div className="space-y-3">
+            {profiles.map((p) => (
+              <div key={p.id} className="flex items-center justify-between py-3 border-b border-border last:border-0">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center text-white text-xs font-bold">
+                    {(p.full_name || p.email || "?").charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground text-sm">{p.full_name || "No name"}</p>
+                    <p className="text-xs text-muted-foreground">{p.email}</p>
+                  </div>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  {new Date(p.created_at).toLocaleDateString()}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
@@ -324,27 +591,30 @@ const AddContentForm = ({ onAdded, userId }: { onAdded: () => void; userId: stri
   };
 
   return (
-    <form onSubmit={handleAdd} className="flex flex-col md:flex-row gap-3">
-      <input
-        value={sectionKey}
-        onChange={(e) => setSectionKey(e.target.value)}
-        placeholder="Section key (e.g., hero_title)"
-        className="flex-1 px-4 py-2.5 border border-border rounded-xl bg-background text-sm"
-        required
-      />
-      <input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Title"
-        className="flex-1 px-4 py-2.5 border border-border rounded-xl bg-background text-sm"
-      />
-      <input
+    <form onSubmit={handleAdd} className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <input
+          value={sectionKey}
+          onChange={(e) => setSectionKey(e.target.value)}
+          placeholder="Section key (e.g., hero_title)"
+          className="px-4 py-2.5 border border-border rounded-xl bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+          required
+        />
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Title"
+          className="px-4 py-2.5 border border-border rounded-xl bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+        />
+      </div>
+      <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Content"
-        className="flex-1 px-4 py-2.5 border border-border rounded-xl bg-background text-sm"
+        rows={3}
+        className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring"
       />
-      <button type="submit" className="btn-gradient !px-6 !py-2.5 !text-sm whitespace-nowrap">
+      <button type="submit" className="btn-gradient !px-6 !py-2.5 !text-sm">
         Add Section
       </button>
     </form>
@@ -352,7 +622,15 @@ const AddContentForm = ({ onAdded, userId }: { onAdded: () => void; userId: stri
 };
 
 // Content editor
-const ContentEditor = ({ item, onSave }: { item: any; onSave: (id: string, title: string, content: string) => void }) => {
+const ContentEditor = ({
+  item,
+  onSave,
+  onDelete,
+}: {
+  item: any;
+  onSave: (id: string, title: string, content: string) => void;
+  onDelete: (id: string) => void;
+}) => {
   const [title, setTitle] = useState(item.title || "");
   const [content, setContent] = useState(item.content || "");
   const [editing, setEditing] = useState(false);
@@ -360,25 +638,31 @@ const ContentEditor = ({ item, onSave }: { item: any; onSave: (id: string, title
   return (
     <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
       <div className="flex items-center justify-between mb-4">
-        <div>
+        <div className="flex items-center gap-2">
           <span className="text-xs font-mono px-2 py-1 bg-accent rounded text-muted-foreground">{item.section_key}</span>
           {item.updated_at && (
-            <span className="text-xs text-muted-foreground ml-3">
+            <span className="text-xs text-muted-foreground">
               Updated: {new Date(item.updated_at).toLocaleString()}
             </span>
           )}
         </div>
-        <button
-          onClick={() => {
-            if (editing) {
-              onSave(item.id, title, content);
-            }
-            setEditing(!editing);
-          }}
-          className={editing ? "btn-gradient !px-4 !py-1.5 !text-sm" : "text-sm px-4 py-1.5 rounded-lg bg-accent text-foreground hover:bg-accent/80"}
-        >
-          {editing ? "Save" : "Edit"}
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              if (editing) onSave(item.id, title, content);
+              setEditing(!editing);
+            }}
+            className={editing ? "btn-gradient !px-4 !py-1.5 !text-xs" : "text-xs px-3 py-1.5 rounded-lg bg-accent text-foreground hover:bg-accent/80"}
+          >
+            {editing ? "Save" : "Edit"}
+          </button>
+          <button
+            onClick={() => onDelete(item.id)}
+            className="text-xs px-3 py-1.5 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive/20"
+          >
+            <Trash2 size={12} />
+          </button>
+        </div>
       </div>
 
       {editing ? (
@@ -386,14 +670,14 @@ const ContentEditor = ({ item, onSave }: { item: any; onSave: (id: string, title
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-sm"
+            className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
             placeholder="Title"
           />
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={4}
-            className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-sm resize-none"
+            className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring"
             placeholder="Content"
           />
         </div>
