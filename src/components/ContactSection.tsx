@@ -53,41 +53,41 @@ const ContactSection = () => {
   ];
 
   return (
-    <section id="contact" className="section-padding bg-background relative overflow-hidden">
-      <div className="absolute -top-20 right-0 w-96 h-96 rounded-full bg-[hsl(24,100%,50%)/0.04] blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-20 left-0 w-96 h-96 rounded-full bg-[hsl(340,80%,55%)/0.03] blur-3xl pointer-events-none" />
+    <section id="contact" className="section-padding bg-card relative overflow-hidden">
+      <div className="absolute -top-20 right-0 w-80 h-80 rounded-full bg-[hsl(215,70%,40%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-20 left-0 w-80 h-80 rounded-full bg-[hsl(25,90%,50%)/0.04] blur-3xl pointer-events-none" />
 
       <div className="container mx-auto relative z-10">
         <motion.div
-          className="text-center mb-20"
+          className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
           <h2 className="section-title">Contact Us</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-6 leading-relaxed">
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto mt-4">
             Reach out to our team for inquiries about our transport services or to request a quote.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-bold mb-10 gradient-text">Get In Touch</h3>
-            <div className="space-y-7">
+            <h3 className="text-2xl font-bold mb-8 gradient-text">Get In Touch</h3>
+            <div className="space-y-6">
               {contactInfo.map((item, i) => (
                 <div key={i} className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl gradient-bg flex items-center justify-center flex-shrink-0 text-white glow-orange">
-                    <item.icon size={20} />
+                  <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center flex-shrink-0">
+                    <item.icon size={20} className="text-primary-foreground" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground mb-1">{item.title}</h4>
                     {item.isLink ? (
-                      <a href="https://www.mefirstgroup.co.za" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                      <a href="https://www.mefirstgroup.co.za" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-secondary transition-colors">
                         {item.value}
                       </a>
                     ) : (
@@ -107,25 +107,25 @@ const ContactSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-bold mb-10 gradient-text">Send Us a Message</h3>
+            <h3 className="text-2xl font-bold mb-8 gradient-text">Send Us a Message</h3>
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">Name</label>
-                  <input type="text" id="name" value={formData.name} onChange={handleChange} className="w-full px-4 py-3.5 border border-border rounded-2xl bg-card focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all text-sm" placeholder="Your name" required />
+                  <input type="text" id="name" value={formData.name} onChange={handleChange} className="w-full px-4 py-3 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" placeholder="Your name" required />
                 </div>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">Email</label>
-                  <input type="email" id="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-3.5 border border-border rounded-2xl bg-card focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all text-sm" placeholder="Your email" required />
+                  <input type="email" id="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-3 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" placeholder="Your email" required />
                 </div>
               </div>
               <div>
                 <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">Subject</label>
-                <input type="text" id="subject" value={formData.subject} onChange={handleChange} className="w-full px-4 py-3.5 border border-border rounded-2xl bg-card focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all text-sm" placeholder="Subject" required />
+                <input type="text" id="subject" value={formData.subject} onChange={handleChange} className="w-full px-4 py-3 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" placeholder="Subject" required />
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">Message</label>
-                <textarea id="message" rows={5} value={formData.message} onChange={handleChange} className="w-full px-4 py-3.5 border border-border rounded-2xl bg-card focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none text-sm" placeholder="Your message" required />
+                <textarea id="message" rows={5} value={formData.message} onChange={handleChange} className="w-full px-4 py-3 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none" placeholder="Your message" required />
               </div>
               <button type="submit" className="btn-gradient w-full md:w-auto inline-flex items-center justify-center gap-2" disabled={isSubmitting}>
                 <Send size={18} />
