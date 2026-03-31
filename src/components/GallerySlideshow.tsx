@@ -25,18 +25,18 @@ const GallerySlideshow = () => {
 
   return (
     <section className="section-padding bg-card relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-96 h-96 rounded-full bg-[hsl(215,60%,40%)/0.04] blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-[hsl(25,90%,50%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full bg-[hsl(24,100%,50%)/0.04] blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full bg-[hsl(340,80%,55%)/0.03] blur-3xl pointer-events-none" />
 
       <div className="container mx-auto relative z-10">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
           <h2 className="section-title">Our Operations Gallery</h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto mt-4">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-6 leading-relaxed">
             See our professional transport operations in action across different industries and cargo types.
           </p>
         </motion.div>
@@ -51,10 +51,10 @@ const GallerySlideshow = () => {
                 }`}
               >
                 <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[hsl(215,50%,10%)/0.8] via-[hsl(215,40%,15%)/0.2] to-transparent flex items-end">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end">
                   <div className="p-8 md:p-12">
                     <h3 className="text-2xl md:text-4xl font-bold mb-2 text-white">{slide.title}</h3>
-                    <p className="text-base md:text-lg text-white/80 max-w-xl">{slide.message}</p>
+                    <p className="text-base md:text-lg text-white/60 max-w-xl">{slide.message}</p>
                   </div>
                 </div>
               </div>
@@ -63,31 +63,31 @@ const GallerySlideshow = () => {
 
           <button
             onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[hsl(215,60%,30%)/0.3] backdrop-blur-md border border-[hsl(215,60%,40%)/0.3] flex items-center justify-center text-white hover:bg-[hsl(215,60%,30%)/0.5] transition-all"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-all"
           >
             <ChevronLeft size={24} />
           </button>
           <button
             onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[hsl(215,60%,30%)/0.3] backdrop-blur-md border border-[hsl(215,60%,40%)/0.3] flex items-center justify-center text-white hover:bg-[hsl(215,60%,30%)/0.5] transition-all"
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-all"
           >
             <ChevronRight size={24} />
           </button>
 
-          <div className="flex justify-center mt-6 gap-2">
+          <div className="flex justify-center mt-8 gap-2">
             {slides.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  index === currentSlide ? "w-8 gradient-bg-secondary" : "w-2 bg-border"
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  index === currentSlide ? "w-8 gradient-bg" : "w-1.5 bg-border"
                 }`}
               />
             ))}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-20">
           {[
             { title: "Mining & Industrial", desc: "Specialized transport for mining commodities, cement, and heavy industrial materials." },
             { title: "Agricultural Products", desc: "Safe transport of fertilizers, fresh produce, and agricultural inputs with proper handling." },
@@ -95,14 +95,14 @@ const GallerySlideshow = () => {
           ].map((card, i) => (
             <motion.div
               key={i}
-              className="text-center p-8 bg-accent rounded-2xl border border-border card-hover"
+              className="text-center p-8 apple-card"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.15 }}
             >
-              <h4 className="font-bold text-lg mb-2 gradient-text">{card.title}</h4>
-              <p className="text-muted-foreground text-sm">{card.desc}</p>
+              <h4 className="font-semibold text-lg mb-2 gradient-text">{card.title}</h4>
+              <p className="text-muted-foreground text-sm leading-relaxed">{card.desc}</p>
             </motion.div>
           ))}
         </div>
