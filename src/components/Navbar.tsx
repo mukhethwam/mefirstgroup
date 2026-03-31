@@ -15,14 +15,12 @@ const Navbar = () => {
       if (!ticking.current) {
         ticking.current = true;
         requestAnimationFrame(() => {
-          const shouldBeScrolled = window.scrollY > 10;
-          setIsScrolled(shouldBeScrolled);
+          setIsScrolled(window.scrollY > 10);
           lastScrollY.current = window.scrollY;
           ticking.current = false;
         });
       }
     };
-
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -53,10 +51,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-300 ease-out ${
+      className={`sticky top-0 z-50 transition-all duration-500 ease-out ${
         isScrolled
-          ? "bg-primary/95 backdrop-blur-xl shadow-[0_4px_30px_rgba(20,50,100,0.15)] py-2"
-          : "bg-primary py-4"
+          ? "bg-black/80 backdrop-blur-2xl shadow-[0_1px_0_rgba(255,255,255,0.05)] py-2"
+          : "bg-black/90 backdrop-blur-xl py-3"
       }`}
     >
       <div className="container mx-auto px-4">
@@ -65,7 +63,7 @@ const Navbar = () => {
             <img
               src="/lovable-uploads/5e0c66c3-0eee-4e98-8870-06dde2529bcb.png"
               alt="Me First Group"
-              className={`transition-all duration-300 ease-out ${isScrolled ? "h-10" : "h-12"} w-auto`}
+              className={`transition-all duration-300 ease-out ${isScrolled ? "h-9" : "h-11"} w-auto`}
             />
           </Link>
 
@@ -76,17 +74,17 @@ const Navbar = () => {
                 <Link
                   key={link.label}
                   to={link.to!}
-                  className="px-4 py-2 rounded-lg text-sm font-medium text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 transition-all duration-200 flex items-center gap-1.5"
+                  className="px-4 py-2 rounded-full text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300 flex items-center gap-1.5"
                   onClick={() => window.scrollTo(0, 0)}
                 >
-                  {link.icon && <link.icon size={15} />}
+                  {link.icon && <link.icon size={14} />}
                   {link.label}
                 </Link>
               ) : (
                 <button
                   key={link.label}
                   onClick={link.action}
-                  className="px-4 py-2 rounded-lg text-sm font-medium text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 transition-all duration-200"
+                  className="px-4 py-2 rounded-full text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300"
                 >
                   {link.label}
                 </button>
@@ -94,15 +92,15 @@ const Navbar = () => {
             )}
             <button
               onClick={() => scrollToSection("contact")}
-              className="ml-2 btn-gradient !px-5 !py-2.5 !text-sm inline-flex items-center gap-2 !rounded-lg"
+              className="ml-3 btn-gradient !px-6 !py-2 !text-sm inline-flex items-center gap-2"
             >
-              <Phone size={15} />
+              <Phone size={14} />
               Contact Us
             </button>
           </div>
 
           {/* Mobile toggle */}
-          <button onClick={toggleMenu} className="md:hidden p-2 text-primary-foreground">
+          <button onClick={toggleMenu} className="md:hidden p-2 text-white">
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -110,13 +108,13 @@ const Navbar = () => {
         {/* Mobile menu */}
         {isMenuOpen && (
           <div className="md:hidden animate-fade-in">
-            <div className="flex flex-col space-y-1 py-4 border-t border-primary-foreground/20 mt-2">
+            <div className="flex flex-col space-y-1 py-4 border-t border-white/10 mt-3">
               {navLinks.map((link) =>
                 link.type === "link" ? (
                   <Link
                     key={link.label}
                     to={link.to!}
-                    className="px-4 py-3 rounded-lg text-primary-foreground hover:bg-primary-foreground/10 transition-colors flex items-center gap-2 font-medium"
+                    className="px-4 py-3 rounded-2xl text-white/80 hover:text-white hover:bg-white/10 transition-colors flex items-center gap-2 font-medium"
                     onClick={() => {
                       setIsMenuOpen(false);
                       window.scrollTo(0, 0);
@@ -129,7 +127,7 @@ const Navbar = () => {
                   <button
                     key={link.label}
                     onClick={link.action}
-                    className="px-4 py-3 rounded-lg text-primary-foreground hover:bg-primary-foreground/10 transition-colors text-left font-medium"
+                    className="px-4 py-3 rounded-2xl text-white/80 hover:text-white hover:bg-white/10 transition-colors text-left font-medium"
                   >
                     {link.label}
                   </button>
@@ -137,7 +135,7 @@ const Navbar = () => {
               )}
               <button
                 onClick={() => scrollToSection("contact")}
-                className="btn-gradient !rounded-lg flex items-center justify-center gap-2 mt-2"
+                className="btn-gradient flex items-center justify-center gap-2 mt-2"
               >
                 <Phone size={16} />
                 Contact Us
