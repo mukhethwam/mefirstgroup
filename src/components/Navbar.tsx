@@ -57,11 +57,13 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center">
-            <img
-              src="/lovable-uploads/5e0c66c3-0eee-4e98-8870-06dde2529bcb.png"
-              alt="Me First Group"
-              className={`transition-all duration-300 ${isScrolled ? "h-9" : "h-11"} w-auto`}
-            />
+            <div className="bg-white/60 backdrop-blur-md rounded-lg p-1.5">
+              <img
+                src="/lovable-uploads/5e0c66c3-0eee-4e98-8870-06dde2529bcb.png"
+                alt="Me First Group"
+                className={`transition-all duration-300 ${isScrolled ? "h-9" : "h-11"} w-auto`}
+              />
+            </div>
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
