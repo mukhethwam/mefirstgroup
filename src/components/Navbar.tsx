@@ -98,45 +98,46 @@ const Navbar = () => {
             </button>
           </div>
 
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2 text-foreground">
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-
-        {isMenuOpen && (
-          <div className="md:hidden animate-fade-in">
-            <div className="flex flex-col gap-1 py-4 border-t border-black/5 mt-2">
-              {navLinks.map((link) =>
-                link.type === "link" ? (
-                  <Link
-                    key={link.label}
-                    to={link.to!}
-                    className="px-4 py-3 rounded-lg text-foreground/80 hover:bg-primary/5 hover:text-primary transition-colors flex items-center gap-2 font-medium"
-                    onClick={() => { setIsMenuOpen(false); window.scrollTo(0, 0); }}
-                  >
-                    {link.icon && <link.icon size={16} />}
-                    {link.label}
-                  </Link>
-                ) : (
-                  <button
-                    key={link.label}
-                    onClick={link.action}
-                    className="px-4 py-3 rounded-lg text-foreground/80 hover:bg-primary/5 hover:text-primary transition-colors text-left font-medium"
-                  >
-                    {link.label}
-                  </button>
-                )
-              )}
-              <button
-                onClick={() => scrollToSection("contact")}
-                className="bg-secondary text-white rounded-lg py-3 flex items-center justify-center gap-2 mt-2 font-semibold"
-              >
-                <Phone size={16} />
-                Contact Us
+          <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+            <SheetTrigger asChild>
+              <button className="md:hidden p-2 text-foreground">
+                <Menu size={24} />
               </button>
-            </div>
-          </div>
-        )}
+            </SheetTrigger>
+            <SheetContent side="right" className="bg-white/80 backdrop-blur-xl border-l border-white/30 w-[280px]">
+              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+              <div className="flex flex-col gap-1 pt-8">
+                {navLinks.map((link) =>
+                  link.type === "link" ? (
+                    <Link
+                      key={link.label}
+                      to={link.to!}
+                      className="px-4 py-3 rounded-lg text-foreground/80 hover:bg-primary/5 hover:text-primary transition-colors flex items-center gap-2 font-medium"
+                      onClick={() => { setIsMenuOpen(false); window.scrollTo(0, 0); }}
+                    >
+                      {link.icon && <link.icon size={16} />}
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <button
+                      key={link.label}
+                      onClick={link.action}
+                      className="px-4 py-3 rounded-lg text-foreground/80 hover:bg-primary/5 hover:text-primary transition-colors text-left font-medium"
+                    >
+                      {link.label}
+                    </button>
+                  )
+                )}
+                <button
+                  onClick={() => scrollToSection("contact")}
+                  className="bg-secondary text-white rounded-lg py-3 flex items-center justify-center gap-2 mt-2 font-semibold"
+                >
+                  <Phone size={16} />
+                  Contact Us
+                </button>
+              </div>
+            </SheetContent>
+          </Sheet>
       </div>
     </nav>
   );
