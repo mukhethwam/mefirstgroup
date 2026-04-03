@@ -138,6 +138,7 @@ const Navbar = () => {
               </div>
             </SheetContent>
           </Sheet>
+        </div>
       </div>
     </nav>
   );
