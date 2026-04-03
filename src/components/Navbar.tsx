@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Menu, X, Phone, MapPin, Truck, Users } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = () => {
@@ -58,13 +57,11 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center">
-            <div className="bg-white/60 backdrop-blur-md rounded-lg p-1.5">
-              <img
-                src="/lovable-uploads/5e0c66c3-0eee-4e98-8870-06dde2529bcb.png"
-                alt="Me First Group"
-                className={`transition-all duration-300 ${isScrolled ? "h-9" : "h-11"} w-auto`}
-              />
-            </div>
+            <img
+              src="/lovable-uploads/5e0c66c3-0eee-4e98-8870-06dde2529bcb.png"
+              alt="Me First Group"
+              className={`transition-all duration-300 ${isScrolled ? "h-9" : "h-11"} w-auto`}
+            />
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
@@ -98,47 +95,45 @@ const Navbar = () => {
             </button>
           </div>
 
-          <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-            <SheetTrigger asChild>
-              <button className="md:hidden p-2 text-foreground">
-                <Menu size={24} />
-              </button>
-            </SheetTrigger>
-            <SheetContent side="right" className="bg-white/80 backdrop-blur-xl border-l border-white/30 w-[280px]">
-              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-              <div className="flex flex-col gap-1 pt-8">
-                {navLinks.map((link) =>
-                  link.type === "link" ? (
-                    <Link
-                      key={link.label}
-                      to={link.to!}
-                      className="px-4 py-3 rounded-lg text-foreground/80 hover:bg-primary/5 hover:text-primary transition-colors flex items-center gap-2 font-medium"
-                      onClick={() => { setIsMenuOpen(false); window.scrollTo(0, 0); }}
-                    >
-                      {link.icon && <link.icon size={16} />}
-                      {link.label}
-                    </Link>
-                  ) : (
-                    <button
-                      key={link.label}
-                      onClick={link.action}
-                      className="px-4 py-3 rounded-lg text-foreground/80 hover:bg-primary/5 hover:text-primary transition-colors text-left font-medium"
-                    >
-                      {link.label}
-                    </button>
-                  )
-                )}
-                <button
-                  onClick={() => scrollToSection("contact")}
-                  className="bg-secondary text-white rounded-lg py-3 flex items-center justify-center gap-2 mt-2 font-semibold"
-                >
-                  <Phone size={16} />
-                  Contact Us
-                </button>
-              </div>
-            </SheetContent>
-          </Sheet>
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2 text-foreground">
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
+
+        {isMenuOpen && (
+          <div className="md:hidden animate-fade-in">
+            <div className="flex flex-col gap-1 py-4 border-t border-black/5 mt-2">
+              {navLinks.map((link) =>
+                link.type === "link" ? (
+                  <Link
+                    key={link.label}
+                    to={link.to!}
+                    className="px-4 py-3 rounded-lg text-foreground/80 hover:bg-primary/5 hover:text-primary transition-colors flex items-center gap-2 font-medium"
+                    onClick={() => { setIsMenuOpen(false); window.scrollTo(0, 0); }}
+                  >
+                    {link.icon && <link.icon size={16} />}
+                    {link.label}
+                  </Link>
+                ) : (
+                  <button
+                    key={link.label}
+                    onClick={link.action}
+                    className="px-4 py-3 rounded-lg text-foreground/80 hover:bg-primary/5 hover:text-primary transition-colors text-left font-medium"
+                  >
+                    {link.label}
+                  </button>
+                )
+              )}
+              <button
+                onClick={() => scrollToSection("contact")}
+                className="bg-secondary text-white rounded-lg py-3 flex items-center justify-center gap-2 mt-2 font-semibold"
+              >
+                <Phone size={16} />
+                Contact Us
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
