@@ -7,22 +7,23 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const ticking = useRef(false);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!ticking.current) {
-        ticking.current = true;
-        requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 10);
-          ticking.current = false;
-        });
+      const currentY = window.scrollY;
+      // Only update if crossing threshold to prevent rattling
+      if (currentY > 20 && !isScrolled) {
+        setIsScrolled(true);
+      } else if (currentY <= 5 && isScrolled) {
+        setIsScrolled(false);
       }
+      lastScrollY.current = currentY;
     };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isScrolled]);
 
   const scrollToSection = (sectionId: string) => {
     setIsMenuOpen(false);
@@ -47,10 +48,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={`sticky top-0 z-50 will-change-transform transition-[background,shadow,padding] duration-300 ${
         isScrolled
-          ? "bg-primary/97 backdrop-blur-md shadow-lg shadow-primary/10 py-2"
-          : "bg-primary py-3"
+          ? "bg-white/80 backdrop-blur-xl shadow-lg shadow-black/5 py-2 border-b border-white/30"
+          : "bg-white/60 backdrop-blur-lg py-3 border-b border-white/20"
       }`}
     >
       <div className="container mx-auto px-4">
@@ -69,7 +70,7 @@ const Navbar = () => {
                 <Link
                   key={link.label}
                   to={link.to!}
-                  className="px-4 py-2 rounded-lg text-[13px] font-medium text-primary-foreground/70 hover:text-primary-foreground hover:bg-white/10 transition-all duration-200 flex items-center gap-1.5"
+                  className="px-4 py-2 rounded-lg text-[13px] font-medium text-foreground/70 hover:text-primary hover:bg-primary/5 transition-all duration-200 flex items-center gap-1.5"
                   onClick={() => window.scrollTo(0, 0)}
                 >
                   {link.icon && <link.icon size={14} />}
@@ -79,7 +80,7 @@ const Navbar = () => {
                 <button
                   key={link.label}
                   onClick={link.action}
-                  className="px-4 py-2 rounded-lg text-[13px] font-medium text-primary-foreground/70 hover:text-primary-foreground hover:bg-white/10 transition-all duration-200"
+                  className="px-4 py-2 rounded-lg text-[13px] font-medium text-foreground/70 hover:text-primary hover:bg-primary/5 transition-all duration-200"
                 >
                   {link.label}
                 </button>
@@ -94,20 +95,20 @@ const Navbar = () => {
             </button>
           </div>
 
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2 text-primary-foreground">
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2 text-foreground">
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
         {isMenuOpen && (
           <div className="md:hidden animate-fade-in">
-            <div className="flex flex-col gap-1 py-4 border-t border-white/10 mt-2">
+            <div className="flex flex-col gap-1 py-4 border-t border-black/5 mt-2">
               {navLinks.map((link) =>
                 link.type === "link" ? (
                   <Link
                     key={link.label}
                     to={link.to!}
-                    className="px-4 py-3 rounded-lg text-primary-foreground/80 hover:bg-white/10 transition-colors flex items-center gap-2 font-medium"
+                    className="px-4 py-3 rounded-lg text-foreground/80 hover:bg-primary/5 hover:text-primary transition-colors flex items-center gap-2 font-medium"
                     onClick={() => { setIsMenuOpen(false); window.scrollTo(0, 0); }}
                   >
                     {link.icon && <link.icon size={16} />}
@@ -117,7 +118,7 @@ const Navbar = () => {
                   <button
                     key={link.label}
                     onClick={link.action}
-                    className="px-4 py-3 rounded-lg text-primary-foreground/80 hover:bg-white/10 transition-colors text-left font-medium"
+                    className="px-4 py-3 rounded-lg text-foreground/80 hover:bg-primary/5 hover:text-primary transition-colors text-left font-medium"
                   >
                     {link.label}
                   </button>
