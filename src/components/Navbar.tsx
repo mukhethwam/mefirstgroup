@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Menu, X, Phone, MapPin, Truck, Users } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -12,7 +12,6 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentY = window.scrollY;
-      // Only update if crossing threshold to prevent rattling
       if (currentY > 20 && !isScrolled) {
         setIsScrolled(true);
       } else if (currentY <= 5 && isScrolled) {
@@ -26,7 +25,6 @@ const Navbar = () => {
   }, [isScrolled]);
 
   const scrollToSection = (sectionId: string) => {
-    setIsMenuOpen(false);
     if (location.pathname !== "/") {
       navigate("/");
       setTimeout(() => {
@@ -95,45 +93,54 @@ const Navbar = () => {
             </button>
           </div>
 
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2 text-foreground">
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-
-        {isMenuOpen && (
-          <div className="md:hidden animate-fade-in">
-            <div className="flex flex-col gap-1 py-4 border-t border-black/5 mt-2">
-              {navLinks.map((link) =>
-                link.type === "link" ? (
-                  <Link
-                    key={link.label}
-                    to={link.to!}
-                    className="px-4 py-3 rounded-lg text-foreground/80 hover:bg-primary/5 hover:text-primary transition-colors flex items-center gap-2 font-medium"
-                    onClick={() => { setIsMenuOpen(false); window.scrollTo(0, 0); }}
-                  >
-                    {link.icon && <link.icon size={16} />}
-                    {link.label}
-                  </Link>
-                ) : (
-                  <button
-                    key={link.label}
-                    onClick={link.action}
-                    className="px-4 py-3 rounded-lg text-foreground/80 hover:bg-primary/5 hover:text-primary transition-colors text-left font-medium"
-                  >
-                    {link.label}
-                  </button>
-                )
-              )}
-              <button
-                onClick={() => scrollToSection("contact")}
-                className="bg-secondary text-white rounded-lg py-3 flex items-center justify-center gap-2 mt-2 font-semibold"
-              >
-                <Phone size={16} />
-                Contact Us
+          {/* Mobile popover menu */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="md:hidden p-2 text-foreground rounded-lg hover:bg-primary/5 transition-colors">
+                <Menu size={22} />
               </button>
-            </div>
-          </div>
-        )}
+            </PopoverTrigger>
+            <PopoverContent
+              align="end"
+              sideOffset={8}
+              className="w-52 p-2 rounded-xl border border-border/50 bg-white/95 backdrop-blur-xl shadow-xl shadow-black/10"
+            >
+              <div className="flex flex-col gap-0.5">
+                {navLinks.map((link) =>
+                  link.type === "link" ? (
+                    <Link
+                      key={link.label}
+                      to={link.to!}
+                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground/80 hover:bg-primary/8 hover:text-primary transition-colors"
+                      onClick={() => window.scrollTo(0, 0)}
+                    >
+                      {link.icon && <link.icon size={15} className="text-secondary" />}
+                      {!link.icon && <span className="w-[15px]" />}
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <button
+                      key={link.label}
+                      onClick={link.action}
+                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground/80 hover:bg-primary/8 hover:text-primary transition-colors text-left"
+                    >
+                      <span className="w-[15px]" />
+                      {link.label}
+                    </button>
+                  )
+                )}
+                <div className="my-1 border-t border-border/30" />
+                <button
+                  onClick={() => scrollToSection("contact")}
+                  className="flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/90 text-white font-semibold px-3 py-2.5 rounded-lg text-sm transition-colors"
+                >
+                  <Phone size={15} />
+                  Contact Us
+                </button>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
     </nav>
   );
