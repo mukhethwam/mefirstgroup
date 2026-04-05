@@ -95,7 +95,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile popover menu */}
-          <Popover>
+          <Popover open={menuOpen} onOpenChange={setMenuOpen}>
             <PopoverTrigger asChild>
               <button className="md:hidden p-2 text-foreground rounded-lg hover:bg-primary/5 transition-colors">
                 <Menu size={22} />
@@ -113,7 +113,7 @@ const Navbar = () => {
                       key={link.label}
                       to={link.to!}
                       className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground/80 hover:bg-primary/8 hover:text-primary transition-colors"
-                      onClick={() => window.scrollTo(0, 0)}
+                      onClick={() => { setMenuOpen(false); window.scrollTo(0, 0); }}
                     >
                       {link.icon && <link.icon size={15} className="text-secondary" />}
                       {!link.icon && <span className="w-[15px]" />}
@@ -122,7 +122,7 @@ const Navbar = () => {
                   ) : (
                     <button
                       key={link.label}
-                      onClick={link.action}
+                      onClick={() => { setMenuOpen(false); link.action?.(); }}
                       className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground/80 hover:bg-primary/8 hover:text-primary transition-colors text-left"
                     >
                       <span className="w-[15px]" />
@@ -132,7 +132,7 @@ const Navbar = () => {
                 )}
                 <div className="my-1 border-t border-border/30" />
                 <button
-                  onClick={() => scrollToSection("contact")}
+                  onClick={() => { setMenuOpen(false); scrollToSection("contact"); }}
                   className="flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/90 text-white font-semibold px-3 py-2.5 rounded-lg text-sm transition-colors"
                 >
                   <Phone size={15} />
