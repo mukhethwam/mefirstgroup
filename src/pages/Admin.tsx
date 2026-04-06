@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
 import AdminLogin from "@/components/admin/AdminLogin";
 import AdminDashboard from "@/components/admin/AdminDashboard";
 
@@ -8,9 +7,13 @@ const Admin = () => {
   const [session, setSession] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isRecovery, setIsRecovery] = useState(false);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === "PASSWORD_RECOVERY") {
+        setIsRecovery(true);
+      }
       setSession(session);
       if (session?.user) {
         const { data } = await supabase
@@ -49,6 +52,10 @@ const Admin = () => {
         <div className="w-10 h-10 border-4 border-border border-t-primary rounded-full animate-spin" />
       </div>
     );
+  }
+
+  if (isRecovery && session) {
+    return <AdminLogin forceView="update-password" />;
   }
 
   if (!session) {
