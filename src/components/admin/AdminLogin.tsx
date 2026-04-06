@@ -239,6 +239,8 @@ const AdminLogin = ({ forceView }: AdminLoginProps) => {
               </div>
               <PasswordStrength password={password} />
             </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Confirm Password</label>
               <div className="relative">
                 <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <input type={showPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
