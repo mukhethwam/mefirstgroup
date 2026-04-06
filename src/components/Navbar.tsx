@@ -57,7 +57,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center">
             <img
-              src="/lovable-uploads/5e0c66c3-0eee-4e98-8870-06dde2529bcb.png"
+              src="/images/me-first-logo-horizontal.png"
               alt="Me First Group"
               className={`transition-all duration-300 ${isScrolled ? "h-9" : "h-11"} w-auto`}
             />
