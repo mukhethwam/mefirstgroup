@@ -188,9 +188,8 @@ const AdminLogin = ({ forceView }: AdminLoginProps) => {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+              <PasswordStrength password={password} />
             </div>
-            <button type="submit" disabled={loading} className="btn-gradient w-full !rounded-xl disabled:opacity-50">
-              {loading ? "Creating account..." : "Sign Up"}
             </button>
             <button type="button" onClick={() => { resetForm(); setView("login"); }}
               className="flex items-center gap-1 text-sm text-primary hover:underline mx-auto pt-2">
@@ -236,9 +235,8 @@ const AdminLogin = ({ forceView }: AdminLoginProps) => {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+              <PasswordStrength password={password} />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Confirm Password</label>
               <div className="relative">
                 <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <input type={showPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
