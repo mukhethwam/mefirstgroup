@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
-import { Lock, Mail, Eye, EyeOff, UserPlus, KeyRound, ArrowLeft } from "lucide-react";
+import { Lock, Mail, Eye, EyeOff, UserPlus, KeyRound, ArrowLeft, ShieldCheck } from "lucide-react";
 
-type View = "login" | "signup" | "reset";
+type View = "login" | "signup" | "reset" | "update-password";
 
-const AdminLogin = () => {
-  const [view, setView] = useState<View>("login");
+interface AdminLoginProps {
+  forceView?: View;
+}
+
+const AdminLogin = ({ forceView }: AdminLoginProps) => {
+  const [view, setView] = useState<View>(forceView || "login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -55,9 +60,31 @@ const AdminLogin = () => {
     setLoading(false);
   };
 
+  const handleUpdatePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      toast({ title: "Error", description: "Passwords do not match.", variant: "destructive" });
+      return;
+    }
+    if (password.length < 6) {
+      toast({ title: "Error", description: "Password must be at least 6 characters.", variant: "destructive" });
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) {
+      toast({ title: "Update Failed", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Password Updated", description: "Your password has been changed successfully." });
+      window.location.reload();
+    }
+    setLoading(false);
+  };
+
   const resetForm = () => {
     setEmail("");
     setPassword("");
+    setConfirmPassword("");
     setFullName("");
   };
 
@@ -74,16 +101,19 @@ const AdminLogin = () => {
             {view === "login" && <Lock className="text-primary-foreground" size={28} />}
             {view === "signup" && <UserPlus className="text-primary-foreground" size={28} />}
             {view === "reset" && <KeyRound className="text-primary-foreground" size={28} />}
+            {view === "update-password" && <ShieldCheck className="text-primary-foreground" size={28} />}
           </div>
           <h1 className="text-3xl font-bold gradient-text">
             {view === "login" && "Admin Login"}
             {view === "signup" && "Create Account"}
             {view === "reset" && "Reset Password"}
+            {view === "update-password" && "Set New Password"}
           </h1>
           <p className="text-muted-foreground mt-2">
             {view === "login" && "Sign in to manage your website"}
             {view === "signup" && "Create a new account to request access"}
             {view === "reset" && "Enter your email to receive a reset link"}
+            {view === "update-password" && "Enter your new password below"}
           </p>
         </div>
 
@@ -186,6 +216,37 @@ const AdminLogin = () => {
             <button type="button" onClick={() => { resetForm(); setView("login"); }}
               className="flex items-center gap-1 text-sm text-primary hover:underline mx-auto pt-2">
               <ArrowLeft size={14} /> Back to login
+            </button>
+          </form>
+        )}
+
+        {/* Update Password Form */}
+        {view === "update-password" && (
+          <form onSubmit={handleUpdatePassword} className="bg-card rounded-2xl shadow-xl border border-border p-8 space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">New Password</label>
+              <div className="relative">
+                <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-10 pr-12 py-3 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                  placeholder="••••••••" required />
+                <button type="button" onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Confirm Password</label>
+              <div className="relative">
+                <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <input type={showPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full pl-10 pr-12 py-3 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                  placeholder="••••••••" required />
+              </div>
+            </div>
+            <button type="submit" disabled={loading} className="btn-gradient w-full !rounded-xl disabled:opacity-50">
+              {loading ? "Updating..." : "Update Password"}
             </button>
           </form>
         )}
