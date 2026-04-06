@@ -190,6 +190,8 @@ const AdminLogin = ({ forceView }: AdminLoginProps) => {
               </div>
               <PasswordStrength password={password} />
             </div>
+            <button type="submit" disabled={loading} className="btn-gradient w-full !rounded-xl disabled:opacity-50">
+              {loading ? "Creating account..." : "Sign Up"}
             </button>
             <button type="button" onClick={() => { resetForm(); setView("login"); }}
               className="flex items-center gap-1 text-sm text-primary hover:underline mx-auto pt-2">
