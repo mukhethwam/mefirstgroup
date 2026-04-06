@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { Lock, Mail, Eye, EyeOff, UserPlus, KeyRound, ArrowLeft, ShieldCheck } from "lucide-react";
+import PasswordStrength from "./PasswordStrength";
 
 type View = "login" | "signup" | "reset" | "update-password";
 
@@ -49,7 +50,7 @@ const AdminLogin = ({ forceView }: AdminLoginProps) => {
     e.preventDefault();
     setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/admin`,
+      redirectTo: `${window.location.origin}/#/admin`,
     });
     if (error) {
       toast({ title: "Reset Failed", description: error.message, variant: "destructive" });
@@ -187,6 +188,7 @@ const AdminLogin = ({ forceView }: AdminLoginProps) => {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+              <PasswordStrength password={password} />
             </div>
             <button type="submit" disabled={loading} className="btn-gradient w-full !rounded-xl disabled:opacity-50">
               {loading ? "Creating account..." : "Sign Up"}
@@ -235,6 +237,7 @@ const AdminLogin = ({ forceView }: AdminLoginProps) => {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+              <PasswordStrength password={password} />
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">Confirm Password</label>

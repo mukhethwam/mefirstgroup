@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-16 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>
-            <h3 className="text-xl font-bold mb-4 font-['Space_Grotesk']">Me First Group</h3>
+            <img src="/images/me-first-logo-horizontal.png" alt="Me First Group" className="h-10 mb-4 brightness-0 invert" />
             <p className="text-white/70 mb-6 text-sm leading-relaxed">
               Specialized transport solutions for mining commodities, delivering reliability and efficiency with our 34-ton side tipper fleet.
             </p>
